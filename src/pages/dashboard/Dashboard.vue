@@ -55,7 +55,7 @@
               </v-list-item>
             </template>
 
-            <v-list-item to="/consultas-usuarios" prepend-icon="mdi-list-box-outline">
+            <v-list-item to="/consultas" prepend-icon="mdi-list-box-outline">
               <v-list-item-title>Consultas</v-list-item-title>
             </v-list-item>
 

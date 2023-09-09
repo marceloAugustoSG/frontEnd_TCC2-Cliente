@@ -1,8 +1,3 @@
-/**
- * plugins/vuetify.js
- *
- * Framework documentation: https://vuetifyjs.com`
- */
 
 // Styles
 import "@mdi/font/css/materialdesignicons.css";
@@ -10,7 +5,6 @@ import "vuetify/styles";
 
 // Composables
 import { createVuetify } from "vuetify";
-import { VDataTable } from "vuetify/labs/VDataTable";
 import { VuetifyDateAdapter } from "vuetify/labs/date/adapters/vuetify";
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
@@ -50,9 +44,6 @@ const dark = {
 export default createVuetify({
   date: {
     adapter: VuetifyDateAdapter,
-  },
-  components: {
-    VDataTable,
   },
 
   theme: {
