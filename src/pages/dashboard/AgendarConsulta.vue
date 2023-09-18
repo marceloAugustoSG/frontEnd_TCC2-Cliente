@@ -4,21 +4,21 @@
       <v-row>
         <v-col cols="12" xl="12" sm="8">
           <VueDatePicker required="true" placeholder="Data" locale="pt-BR" :enable-time-picker="false" v-model="data"
-            :disabled-week-days="[6, 0]" />
+            :disabled-week-days="[6, 0]" :format="format" :start-date="startDate" />
         </v-col>
 
         <v-col cols="12" xl="12" sm="4">
           <VueDatePicker required v-model="hora" time-picker disable-time-range-validation placeholder="Horário"
-            :min-time="{ hours: 8, minutes: 0 }" :max-time="{ hours: 17, minutes: 0 }"
-            :start-time="{ hours: 9, minutes: 0 }" no-minutes-overlay />
+            :start-time="{ hours: 8, minutes: 0 }" :max-time="{ hours: 17, minutes: 0 }" no-minutes-overlay
+            minutes-increment="30" />
         </v-col>
 
         <v-col cols="12" md="12">
           <v-select v-model="servico" label="Serviço" :items="[
-            'Atendimento Odontologia',
+            'Atendimento Odontológico',
             'Atendimento Médico',
             'Atendimento Psicológico',
-          ]"></v-select>
+          ]" requerid />
         </v-col>
         <v-col cols="12" md="12">
           <v-textarea label="Observações" v-model="observacao" />
@@ -28,21 +28,30 @@
         Agendar
       </v-btn>
     </form>
+    <template>
+      <v-dialog v-model="isInputs" max-width="500">
+        <v-card>
+          <Alert />
+        </v-card>
+      </v-dialog>
+    </template>
   </v-container>
 
-  <!-- <p>{{ dataFormatada }}</p>
+  <p>{{ data }}</p>
   <p>{{ hora }}</p>
-  <p>{{ servico }}</p>
-  <p>{{ observacao }}</p> -->
+  <p>{{ dataFormatada }}</p>
 </template>
 
 <script setup>
 import VueDatePicker from "@vuepic/vue-datepicker";
 import { ref, computed, reactive } from 'vue';
 import { useStore } from "vuex";
+import Alert from "@/components/Alert.vue";
 
 let loading = ref(false)
 let showIcon = ref(false)
+let isInputs = ref(false)
+
 
 const store = useStore()
 
@@ -58,39 +67,57 @@ function clearConsulta() {
   observacao.value = ''
 }
 
+const format = (date) => {
+  const dia = date.getDate();
+  const mes = date.getMonth() + 1;
+  const ano = date.getFullYear();
+
+  return `${dia}/${mes}/${ano}`;
+}
+
 
 function agendar() {
   loading.value = true
   setTimeout(() => (loading.value = false), 1000)
-  showIcon.value = !showIcon.value
 
-  const novoAgendamento = {
-    nome: servico.value,
-    data: dataFormatada,
-    hora: `${hora.value.hours} horas e ${hora.value.minutes <= 9 ? `0${hora.value.minutes}` : hora.value.minutes} minutos`,
-    descricao: (!observacao.value ? 'Nenhuma descrição' : observacao.value)
-  }
+  if (!data.value || !hora.value || !servico.value) {
+    // alert('campos vazios')
+    isInputs.value = true
+  } else {
 
-  const teste = {
-    id: 1,
-    nome: "Atendimento Odontológico",
-    data: "12/08/2020",
-    hora: "10:00",
-    descricao: 'Extração do siso'
+    const novoAgendamento = {
+      nome: servico.value,
+      data: dataFormatada.value,
+      hora: `${hora.value.hours} horas e ${hora.value.minutes <= 9 ? `0${hora.value.minutes}` : hora.value.minutes} minutos`,
+      descricao: (!observacao.value ? 'Nenhuma descrição' : observacao.value)
+    }
+    store.dispatch('addAgendamento', novoAgendamento)
+
+    showIcon.value = !showIcon.value
+    // clearConsulta()
   }
-  store.dispatch('addAgendamento', novoAgendamento)
 }
 
+
+
 const dataFormatada = reactive(computed(() => {
+  // const dataF = new Date(data.value);
+  // const dia = String(dataF.getDate()).padStart(2, "0");
+  // const mes = String(dataF.getMonth() + 1).padStart(2, "0");
+  // const ano = dataF.getFullYear();
+
+  // return `${dia}/${mes}/${ano}`;
+
   const dataF = new Date(data.value);
   const dia = String(dataF.getDate()).padStart(2, "0");
   const mes = String(dataF.getMonth() + 1).padStart(2, "0");
   const ano = dataF.getFullYear();
 
-  return `${dia}/${mes}/${ano}`;
+  return `${ano}-${mes}-${dia}T${hora.value.hours}:${hora.value.minutes}:00.000Z`;
 
 
 }))
 
 
 </script>
+<style scoped></style>

@@ -47,7 +47,7 @@
 
       <v-navigation-drawer style="position: fixed;" v-model="isOpenSBar">
         <v-list>
-          <v-list-item to="/inicio" prepend-icon="mdi-home">Inicio</v-list-item>
+          <!-- <v-list-item to="/inicio" prepend-icon="mdi-home">Inicio</v-list-item> -->
 
           <v-list-group value="users">
             <template #activator="{ props }">

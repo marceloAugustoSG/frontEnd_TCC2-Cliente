@@ -39,7 +39,9 @@
                                             Login</v-btn>
                                     </v-col>
 
-                                    <v-col> <v-btn type="submit" class="w-100" color="create">Criar Conta</v-btn>
+                                    <v-col>
+                                        <v-btn type="submit" class="w-100" color="create">Criar
+                                            Conta</v-btn>
                                     </v-col>
 
                                 </v-row>
@@ -53,59 +55,50 @@
     </v-container>
 </template>
 
-<script>
-export default {
-    data() {
-        return {
-            usuario: {
-                nome: '',
-                email: '',
-                password: '',
-                matricula: '',
-                confirmPassword: '',
-                tipoUsuario: ''
-            },
-            showpassword: false,
-            showCorfirmPassword: false,
-            emailRules: [
-                v => !!v || 'E-mail é obrigatório e unico',
-                v => /^[a-zA-Z0-9._%+-]+@edu\.ufes\.br/.test(v) || 'E-mail deve ser válido',
-            ], passwordRules: [
-                v => !!v || 'Senha é obrigatoria',
+<script setup>
+import { ref, reactive } from "vue"
 
-            ],
+let usuario = reactive({
+    nome: '',
+    email: '',
+    password: '',
+    matricula: '',
+    confirmPassword: '',
+    tipoUsuario: ''
+})
 
-            matriculaRules: [
-                value => !!value || "Campo obrigatório",
-                value =>
-                    (value && /^\d{10}$/.test(value)) ||
-                    "A matricula deve ter exatamente 10 números",
-                value => value.leng
-            ],
-            selectChoices: ['Aluno', 'Servidor']
+let showpassword = ref(false)
+let showCorfirmPassword = ref(false)
 
+const emailRules = ref([
+    v => !!v || 'E-mail é obrigatório e unico',
+    v => /^[a-zA-Z0-9._%+-]+@edu\.ufes\.br/.test(v) || 'E-mail deve ser válido',
+])
+const passwordRules = ref([
+    v => !!v || 'Senha é obrigatoria',
 
+])
 
-        }
-    }, methods: {
+const matriculaRules = ref([
+    value => !!value || "Campo obrigatório",
+    value =>
+        (value && /^\d{10}$/.test(value)) ||
+        "A matricula deve ter exatamente 10 números",
+    value => value.leng
+])
 
-        teste() {
-            alert("clicou");
-        },
-        submit() {
-            alert(`Nome: ${this.usuario.nome}\n
-                   Email: ${this.usuario.email}\n
-                   Senha: ${this.usuario.password}\n
-                   Senha Confirmada: ${this.usuario.confirmPassword}\n
-                   Matricula:${this.usuario.matricula}\n
-                   Tipo: ${this.usuario.tipoUsuario}`)
+const selectChoices = ['Aluno', 'Servidor']
 
 
-
-        }
-    }
-
+function submit() {
+    alert(`Nome: ${usuario.nome}\n
+                   Email: ${usuario.email}\n
+                   Senha: ${usuario.password}\n
+                   Senha Confirmada: ${usuario.confirmPassword}\n
+                   Matricula:${usuario.matricula}\n
+                   Tipo: ${usuario.tipoUsuario}`)
 }
+
 </script>
 
 <style>

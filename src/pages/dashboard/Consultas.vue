@@ -1,6 +1,12 @@
 <template>
   <v-container>
-    <v-row>
+    <div class="aviso" v-if="consultas.length === 0" style="">
+      <p style="text-align: center;">Nenhuma consulta agendada no momento...</p>
+
+    </div>
+
+
+    <v-row v-else>
       <v-col cols="12" md="4" sm="4" v-for="(consulta, index) in consultas " :key="index">
         <v-card>
           <v-card-title>{{ consulta.nome }}</v-card-title>
@@ -40,4 +46,14 @@ const consultas = computed(() => store.state.agendamentos);
 
 
 </script>
-<style scoped></style>
+<style scoped>
+.aviso {
+  width: 100%;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+
+}
+</style>

@@ -50,6 +50,8 @@ const store = createStore({
 
   },
   mutations: {
+
+    //agendamentos
     addAgendamento(state, novoAgendamento) {
       state.agendamentos.push(novoAgendamento)
     }
@@ -58,6 +60,8 @@ const store = createStore({
   },
 
   actions: {
+
+    //agendamentos
     addAgendamento({ commit }, novoAgendamento) {
       commit('addAgendamento', novoAgendamento)
     }

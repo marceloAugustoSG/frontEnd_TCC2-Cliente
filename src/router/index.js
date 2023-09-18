@@ -24,6 +24,7 @@ const routes =
       component: () => import("@/pages/login/Logout"),
     },
     {
+      name: "dashboard",
       path: "/dashBoard",
       component: () => import("@/pages/dashboard/Dashboard.vue"),
       children: [

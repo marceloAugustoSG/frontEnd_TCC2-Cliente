@@ -3,13 +3,13 @@
         <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition">
             <v-card>
                 <v-toolbar color="#114271">
-                    <v-btn icon="mdi-close" @click="dialog = false"  />
+                    <v-btn icon="mdi-close" @click="backRouter" />
                     <v-toolbar-title text="Configurações"></v-toolbar-title>
                     <v-toolbar-items>
                         <v-btn color="white" text="Salvar" variant="elevated" @click="dialog = false" />
                     </v-toolbar-items>
                 </v-toolbar>
-            
+
                 <v-divider></v-divider>
                 <v-list lines="two" subheader>
                     <v-list-subheader>Geral</v-list-subheader>
@@ -30,16 +30,25 @@
     </v-row>
 </template>
 
-<script>
-export default {
-    data() {
-        return {
-            dialog: true,
-            notifications: false,
-            emails: false
-        }
-    },
+<script setup>
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+
+
+const dialog = ref(true)
+const notifications = ref(false)
+const emails = ref(false)
+
+const router = useRouter();
+
+function backRouter() {
+
+    dialog.value = false
+    router.go(-1)
+
+
 }
+
 </script>
 
 <style>
