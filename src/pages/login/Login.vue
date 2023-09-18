@@ -22,15 +22,7 @@
                         Conta</v-btn>
                     </v-col>
                     <v-col>
-                      <v-btn class="w-100" color="primary" append-icon="mdi-login"
-                        :to="isLogado ? '/dashBoard' : '/login'" text="Entrar" @click="logar" />
-                      <template>
-                        <v-dialog v-model="dialog" max-width="500">
-                          <v-card>
-                            <Alert />
-                          </v-card>
-                        </v-dialog>
-                      </template>
+                      <v-btn type="submit" class="w-100" color="primary">Entrar</v-btn>
                     </v-col>
                   </v-row>
                 </form>
@@ -47,33 +39,24 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import Alert from '@/components/Alert.vue'
 
 
 const email = ref('')
 const password = ref('')
 const showpassword = ref(false)
-const isLogado = ref(false)
-const dialog = ref(false);
 const router = useRouter();
 
-
 const emailRules = ref([
-  v => !!v || 'E-mail é obrigatório e unico',
+  v => !!v || 'E-mail é obrigatório',
   v => /^[a-zA-Z0-9._%+-]+@edu\.ufes\.br/.test(v) || 'E-mail deve ser válido(@edu.ufes.br)',
 ])
 
 
-function logar() {
-  if (!email.value || !password.value) {
-    isLogado.value = false
-    dialog.value = true
-
+function submit() {
+  if (email.value === "marcelo.a.gomes@edu.ufes.br" && password.value === "marcelod202") {
+    router.push({ name: "dashboard" })
   } else {
-    dialog.value = false
-    isLogado.value = true
-    router.push({ name: 'dashboard' })
-
+    alert("credenciais invalidas")
   }
 
 }

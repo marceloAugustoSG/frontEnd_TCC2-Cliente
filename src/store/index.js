@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-
+import apiUsuario from "@/services/apiPaciente"
 const store = createStore({
   state: {
     agendamentos: [
@@ -46,15 +46,29 @@ const store = createStore({
       //   hora: "12:00",
       //   descricao: 'Nenhuma descrição'
       // },
-    ]
+    ],
+    usuario: {
+      nome: String,
+      email: String,
+      matricula: String,
+      tipo: String,
+      consultas: Array
+    }
 
   },
   mutations: {
 
     //agendamentos
     addAgendamento(state, novoAgendamento) {
+
       state.agendamentos.push(novoAgendamento)
+    },
+
+    addUsuario(state, novoUsuario) {
+      state.usuario = novoUsuario
     }
+
+
   },
   getters: {
   },
@@ -64,7 +78,17 @@ const store = createStore({
     //agendamentos
     addAgendamento({ commit }, novoAgendamento) {
       commit('addAgendamento', novoAgendamento)
+    },
+
+    async criarUsuario({ commit }, novoUsuario) {
+      await apiUsuario.criarUsuario(novoUsuario).then((res) => {
+        commit('addUsuario', res.data)
+      }).catch((e) => {
+        console.log(e)
+      })
+
     }
+
   }
 })
 

@@ -29,7 +29,7 @@ const dark = {
   colors: {
     background: "#333333",
     surface: "#333333",
-    primary: "#9db9d3",
+    primary: "#0D3E6D",
     "primary-darken-1": "#0D3E6D",
     secondary: "#03DAC6",
     "secondary-darken-1": "#018786",
