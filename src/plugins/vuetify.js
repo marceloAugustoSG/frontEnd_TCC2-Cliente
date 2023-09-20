@@ -15,14 +15,15 @@ const ligth = {
     background: "#f7f7f7",
     surface: "#eeeeee",
     primary: "#0D3E6D",
+    secundary: "#12af83 ",
     "primary-darken-1": "#0D3E6D",
-    secondary: "#03DAC6",
     "secondary-darken-1": "#018786",
     'hover': '#c47070',
     error: "#f3022e",
     info: "#2196F3",
     success: "#4CAF50",
     warning: "#FB8C00",
+    create: "#4caf50"
   },
 };
 const dark = {
@@ -30,9 +31,10 @@ const dark = {
     background: "#333333",
     surface: "#333333",
     primary: "#0D3E6D",
+    secundary: "#12af83 ",
     "primary-darken-1": "#0D3E6D",
-    secondary: "#03DAC6",
     "secondary-darken-1": "#018786",
+    'hover': '#ffd700',
     error: "#f3022e",
     info: "#2196F3",
     success: "#4CAF50",

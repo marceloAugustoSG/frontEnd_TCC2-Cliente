@@ -18,7 +18,7 @@
                     label="Senha" :rules="passwordRules" required />
                   <v-row class="pb-5">
                     <v-col>
-                      <v-btn prepend-icon="mdi-account-plus" to="/criarConta" class="w-100" color="create">Criar
+                      <v-btn prepend-icon="mdi-account-plus" to="/criarConta" color="secundary" class="w-100">Criar
                         Conta</v-btn>
                     </v-col>
                     <v-col>

@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-import apiUsuario from "@/services/apiPaciente"
+import apiUsuario from "@/services/apiUsuario"
 const store = createStore({
   state: {
     agendamentos: [
@@ -50,9 +50,12 @@ const store = createStore({
     usuario: {
       nome: String,
       email: String,
-      matricula: String,
-      tipo: String,
-      consultas: Array
+      Paciente: {
+        nome: String,
+        tipo: String,
+        matricula: String
+      },
+
     }
 
   },

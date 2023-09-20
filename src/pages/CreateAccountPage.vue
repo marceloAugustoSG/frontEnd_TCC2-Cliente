@@ -11,7 +11,7 @@
                         <v-card-item>
                             <form @submit.prevent="submit">
 
-                                <v-text-field prepend-inner-icon="mdi-account" v-model="usuario.nome" label="Nome"
+                                <v-text-field prepend-inner-icon="mdi-account" v-model="usuario.Paciente.nome" label="Nome"
                                     required />
                                 <v-text-field prepend-inner-icon="mdi-email" v-model="usuario.email" :rules="emailRules"
                                     label="E-mail" required />
@@ -30,10 +30,10 @@
                                     :rules="passwordConfirm" required />
 
 
-                                <v-text-field type="number" v-model="usuario.matricula" label="Nº Matricula"
+                                <v-text-field type="number" v-model="usuario.Paciente.matricula" label="Nº Matricula"
                                     :rules="matriculaRules" />
 
-                                <v-select label="Tipo" v-model="usuario.tipo" :items="selectChoices"></v-select>
+                                <v-select label="Tipo" v-model="usuario.Paciente.tipo" :items="selectTipos"></v-select>
 
                                 <v-row class="pb-5">
                                     <v-col>
@@ -64,11 +64,13 @@ import { useStore } from "vuex"
 const store = useStore();
 
 let usuario = reactive({
-    nome: '',
     email: '',
     password: '',
-    matricula: '',
-    tipo: ''
+    Paciente: {
+        nome: '',
+        tipo: '',
+        matricula: ''
+    },
 })
 
 let confirmPassword = ref('')
@@ -92,17 +94,17 @@ const matriculaRules = ref([
     value => value.leng
 ])
 
-const selectChoices = ['Aluno', 'Servidor']
+const selectTipos = ref(['Aluno', 'Servidor'])
 
 
 function submit() {
     if (confirmarPassword()) {
-        alert(`Nome: ${usuario.nome}\n
+        alert(`Nome: ${usuario.Paciente.nome}\n
                    Email: ${usuario.email}\n
                    Senha: ${usuario.password}\n
                    Senha Confirmada: ${usuario.confirmPassword}\n
-                   Matricula:${usuario.matricula}\n
-                   Tipo: ${usuario.tipo}`)
+                   Matricula:${usuario.Paciente.matricula}\n
+                   Tipo: ${usuario.Paciente.tipo}`)
 
         store.dispatch('criarUsuario', usuario)
     } else {
