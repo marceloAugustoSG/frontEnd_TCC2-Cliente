@@ -65,50 +65,39 @@
           </v-list-group>
         </v-list>
       </v-navigation-drawer>
-
       <v-main>
         <v-container>
-
           <router-view />
-
         </v-container>
       </v-main>
     </v-layout>
   </v-app>
 </template>
 
-<script>
+<script setup>
 import { useTheme } from "vuetify";
 import { ref } from "vue";
 import Notificacoes from '@/components/DashBoard/Notificacoes.vue'
-export default {
-  components: {
-    Notificacoes
-  },
-  setup() {
-
-    const theme = useTheme();
-    const isOpenSBar = ref(true);
+import { useStore } from 'vuex';
 
 
-    const notificacoes = [
-      { title: "notificacao 1" },
-      { title: "notificacao 2" },
-      { title: "notificacao 3" },
-      { title: "notificacao 4" },
-    ];
 
-    return {
-      isOpenSBar,
-      theme,
-      notificacoes,
+const theme = useTheme();
+const isOpenSBar = ref(true);
+const store = useStore()
 
-      toggleTheme: () => {
-        theme.global.name.value = theme.global.current.value.dark
-          ? "ligth"
-          : "dark";
-      },
-    };
-  },
-};
+const notificacoes = [
+  { title: "notificacao 1" },
+  { title: "notificacao 2" },
+  { title: "notificacao 3" },
+  { title: "notificacao 4" },
+];
+
+
+function toggleTheme() {
+  theme.global.name.value = theme.global.current.value.dark
+    ? "ligth"
+    : "dark";
+}
+
 </script>

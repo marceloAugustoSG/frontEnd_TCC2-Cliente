@@ -11,10 +11,11 @@
             <v-card>
               <v-card-item>
                 <form @submit.prevent="submit">
-                  <v-text-field prepend-inner-icon="mdi-email" v-model="email" :rules="emailRules" label="E-mail"
+                  <v-text-field prepend-inner-icon="mdi-email" v-model="usuario.email" :rules="emailRules" label="E-mail"
                     required />
-                  <v-text-field prepend-inner-icon="mdi-form-textbox-password" v-model="password" :append-inner-icon="showpassword ? 'mdi-eye' : 'mdi-eye-off'
-                    " :type="showpassword ? 'text' : 'password'" @click:append-inner="showpassword = !showpassword"
+                  <v-text-field prepend-inner-icon="mdi-form-textbox-password" v-model="usuario.password"
+                    :append-inner-icon="showpassword ? 'mdi-eye' : 'mdi-eye-off'
+                      " :type="showpassword ? 'text' : 'password'" @click:append-inner="showpassword = !showpassword"
                     label="Senha" :rules="passwordRules" required />
                   <v-row class="pb-5">
                     <v-col>
@@ -22,7 +23,7 @@
                         Conta</v-btn>
                     </v-col>
                     <v-col>
-                      <v-btn type="submit" class="w-100" color="primary">Entrar</v-btn>
+                      <v-btn type="submit" class="w-100" prepend-icon="mdi-login" color="primary">Entrar</v-btn>
                     </v-col>
                   </v-row>
                 </form>
@@ -37,14 +38,21 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, reactive } from "vue";
+import { useStore } from "vuex"
 import { useRouter } from "vue-router";
 
-
-const email = ref('')
-const password = ref('')
-const showpassword = ref(false)
+const store = useStore();
 const router = useRouter();
+
+
+let usuario = reactive({
+  email: '',
+  password: '',
+})
+
+
+const showpassword = ref(false)
 
 const emailRules = ref([
   v => !!v || 'E-mail é obrigatório',
@@ -53,10 +61,14 @@ const emailRules = ref([
 
 
 function submit() {
-  if (email.value === "marcelo.a.gomes@edu.ufes.br" && password.value === "marcelod202") {
-    router.push({ name: "dashboard" })
-  } else {
-    alert("credenciais invalidas")
+  try {
+    if (store.dispatch('logar', usuario)) {
+
+      router.push({ name: 'dashboard' })
+    }
+
+  } catch (error) {
+    console.log(error)
   }
 
 }

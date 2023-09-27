@@ -12,18 +12,18 @@ import { VuetifyDateAdapter } from "vuetify/labs/date/adapters/vuetify";
 const ligth = {
   dark: false,
   colors: {
-    background: "#f7f7f7",
-    surface: "#eeeeee",
+    background: "#F7F7F7",
+    surface: "#EEE",
     primary: "#0D3E6D",
-    secundary: "#12af83 ",
+    secundary: "#12AF83",
     "primary-darken-1": "#0D3E6D",
     "secondary-darken-1": "#018786",
-    'hover': '#c47070',
-    error: "#f3022e",
+    'hover': '#C47070',
+    error: "#F3022E",
     info: "#2196F3",
     success: "#4CAF50",
     warning: "#FB8C00",
-    create: "#4caf50"
+    create: "#4CAF50"
   },
 };
 const dark = {
@@ -31,15 +31,15 @@ const dark = {
     background: "#333333",
     surface: "#333333",
     primary: "#0D3E6D",
-    secundary: "#12af83 ",
+    secundary: "#12AF83",
     "primary-darken-1": "#0D3E6D",
     "secondary-darken-1": "#018786",
-    'hover': '#ffd700',
-    error: "#f3022e",
+    'hover': '#FFD700',
+    error: "#F3022E",
     info: "#2196F3",
     success: "#4CAF50",
     warning: "#FB8C00",
-    create: "#4caf50",
+    create: "#4CAF50",
   },
 };
 

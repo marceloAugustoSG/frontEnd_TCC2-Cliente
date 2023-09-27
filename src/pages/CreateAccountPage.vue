@@ -56,13 +56,10 @@
         </v-row>
     </v-container>
 </template>
-
 <script setup>
 import { ref, reactive } from "vue"
 import { useStore } from "vuex"
-
 const store = useStore();
-
 let usuario = reactive({
     email: '',
     password: '',
@@ -72,20 +69,16 @@ let usuario = reactive({
         matricula: ''
     },
 })
-
 let confirmPassword = ref('')
 let showpassword = ref(false)
 let showCorfirmPassword = ref(false)
-
 const emailRules = ref([
     v => !!v || 'E-mail é obrigatório e unico',
     v => /^[a-zA-Z0-9._%+-]+@edu\.ufes\.br/.test(v) || 'E-mail deve ser válido',
 ])
 const passwordRules = ref([
     v => !!v || 'Senha é obrigatoria',
-
 ])
-
 const matriculaRules = ref([
     value => !!value || "Campo obrigatório",
     value =>
@@ -93,10 +86,7 @@ const matriculaRules = ref([
         "A matricula deve ter exatamente 10 números",
     value => value.leng
 ])
-
 const selectTipos = ref(['Aluno', 'Servidor'])
-
-
 function submit() {
     if (confirmarPassword()) {
         alert(`Nome: ${usuario.Paciente.nome}\n
@@ -111,12 +101,10 @@ function submit() {
         alert("senhas diferentes")
     }
 }
-
 function confirmarPassword() {
     return usuario.password === confirmPassword.value ? true : false
 }
 </script>
-
 <style>
 .text-center {
     text-align: center;

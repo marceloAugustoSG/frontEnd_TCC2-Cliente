@@ -1,15 +1,12 @@
 <template>
   <v-container>
-    <div class="aviso" v-if="consultas.length === 0" style="">
+    <div class="aviso" v-if="consultas.length === 0">
       <p style="text-align: center;">Nenhuma consulta agendada no momento...</p>
-
     </div>
-
-
     <v-row v-else>
       <v-col cols="12" md="4" sm="4" v-for="(consulta, index) in consultas " :key="index">
         <v-card>
-          <v-card-title>{{ consulta.nome }}</v-card-title>
+          <v-card-title>{{ consulta.servico }}</v-card-title>
           <v-card-subtitle>
             <v-icon icon="mdi-calendar-heart"></v-icon>
             {{ consulta.data }}
@@ -17,11 +14,11 @@
             <v-icon icon="mdi-clock-outline"></v-icon> {{ consulta.hora }}
           </v-card-subtitle>
           <v-card-text>
-            <p v-if="consulta.descricao.length > 30">
-              {{ consulta.descricao.substring(0, 20) + "..." }}
+            <p v-if="consulta.observacao.length > 30">
+              {{ consulta.observacao.substring(0, 20) + "..." }}
             </p>
             <p v-else>
-              {{ consulta.descricao }}
+              {{ consulta.observacao }}
             </p>
           </v-card-text>
           <v-divider></v-divider>
@@ -35,25 +32,24 @@
   </v-container>
 </template>
 <script setup>
-// import { ref } from "vue";
-import { computed } from "vue";
-import { useStore } from "vuex";
+import { computed, ref, onMounted } from 'vue';
+import { useStore } from 'vuex';
 
-const store = useStore();
+const store = useStore()
+const consultasReady = ref(false);
 
-const consultas = computed(() => store.state.agendamentos);
+// Use onMounted para chamar a ação após o componente ser montado
+onMounted(async () => {
+  await store.dispatch('listarConsultasPaciente');
+  consultasReady.value = true; // Sinalize que os dados estão prontos
+});
 
+const consultas = computed(() => store.state.consultas)
 
+console.log(consultas.value)
 
 </script>
-<style scoped>
-.aviso {
-  width: 100%;
-  height: 500px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
+<style></style>
 
-}
-</style>
+<style></style>

@@ -1,10 +1,13 @@
+
+
+
 <template>
   <v-container class="pa-1">
     <form @submit.prevent="agendar">
       <v-row>
         <v-col cols="12" xl="12" sm="8">
           <VueDatePicker required="true" placeholder="Data" locale="pt-BR" :enable-time-picker="false" v-model="data"
-            :disabled-week-days="[6, 0]" :format="format" :start-date="startDate" />
+            :disabled-week-days="[6, 0]" :start-date="startDate" />
         </v-col>
 
         <v-col cols="12" xl="12" sm="4">
@@ -60,21 +63,12 @@ const hora = ref('')
 const servico = ref('')
 const observacao = ref('')
 
-function clearConsulta() {
+function clearCamposConsulta() {
   data.value = ''
   hora.value = ''
   servico.value = ''
   observacao.value = ''
 }
-
-const format = (date) => {
-  const dia = date.getDate();
-  const mes = date.getMonth() + 1;
-  const ano = date.getFullYear();
-
-  return `${dia}/${mes}/${ano}`;
-}
-
 
 function agendar() {
   loading.value = true
@@ -84,36 +78,32 @@ function agendar() {
     // alert('campos vazios')
     isInputs.value = true
   } else {
-
     const novoAgendamento = {
-      nome: servico.value,
       data: dataFormatada.value,
-      hora: `${hora.value.hours} horas e ${hora.value.minutes <= 9 ? `0${hora.value.minutes}` : hora.value.minutes} minutos`,
-      descricao: (!observacao.value ? 'Nenhuma descrição' : observacao.value)
+      status: "agendado",
+      observacao: (!observacao.value ? 'Nenhuma observação' : observacao.value),
+      servico: servico.value,
     }
-    store.dispatch('addAgendamento', novoAgendamento)
-
+    store.dispatch('agendarConsulta', novoAgendamento)
+    store.dispatch('listarConsultasPaciente')
     showIcon.value = !showIcon.value
-    // clearConsulta()
+
+
+    clearCamposConsulta()
   }
 }
 
 
 
 const dataFormatada = reactive(computed(() => {
-  // const dataF = new Date(data.value);
-  // const dia = String(dataF.getDate()).padStart(2, "0");
-  // const mes = String(dataF.getMonth() + 1).padStart(2, "0");
-  // const ano = dataF.getFullYear();
-
-  // return `${dia}/${mes}/${ano}`;
-
   const dataF = new Date(data.value);
   const dia = String(dataF.getDate()).padStart(2, "0");
   const mes = String(dataF.getMonth() + 1).padStart(2, "0");
   const ano = dataF.getFullYear();
+  const horaFormat = hora.value.hours <= 9 ? `0${hora.value.hours}` : hora.value.hours
+  const minutesFormat = hora.value.minutes <= 9 ? `0${hora.value.minutes}` : hora.value.minutes
 
-  return `${ano}-${mes}-${dia}T${hora.value.hours}:${hora.value.minutes}:00.000Z`;
+  return `${ano}-${mes}-${dia}T${horaFormat}:${minutesFormat}:00.000Z`;
 
 
 }))
@@ -121,3 +111,31 @@ const dataFormatada = reactive(computed(() => {
 
 </script>
 <style scoped></style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <template>
+  <h2>agendar consulta</h2>
+</template>
+
+<script setup>
+
+import { useStore } from 'vuex';
+const store = useStore()
+
+console.log('agendar consultas: ' + store.state.pacienteId)
+</script>
+
+<style></style> -->
