@@ -1,13 +1,10 @@
-
-
-
 <template>
   <v-container class="pa-1">
     <form @submit.prevent="agendar">
       <v-row>
         <v-col cols="12" xl="12" sm="8">
-          <VueDatePicker required="true" placeholder="Data" locale="pt-BR" :enable-time-picker="false" v-model="data"
-            :disabled-week-days="[6, 0]" :start-date="startDate" />
+          <VueDatePicker :required="required" placeholder="Data" locale="pt-BR" :enable-time-picker="false" v-model="data"
+            :disabled-week-days="[6, 0]" :min-date="new Date()" />
         </v-col>
 
         <v-col cols="12" xl="12" sm="4">
@@ -54,8 +51,7 @@ import Alert from "@/components/Alert.vue";
 let loading = ref(false)
 let showIcon = ref(false)
 let isInputs = ref(false)
-
-
+const required = ref(true)
 const store = useStore()
 
 const data = ref('')
@@ -92,8 +88,6 @@ function agendar() {
     clearCamposConsulta()
   }
 }
-
-
 
 const dataFormatada = reactive(computed(() => {
   const dataF = new Date(data.value);

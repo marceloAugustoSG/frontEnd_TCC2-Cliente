@@ -43,10 +43,7 @@ onMounted(async () => {
   await store.dispatch('listarConsultasPaciente');
   consultasReady.value = true; // Sinalize que os dados estão prontos
 });
-
 const consultas = computed(() => store.state.consultas)
-
-console.log(consultas.value)
 
 </script>
 

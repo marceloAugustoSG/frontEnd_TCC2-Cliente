@@ -47,7 +47,6 @@
 
       <v-navigation-drawer style="position: fixed;" v-model="isOpenSBar">
         <v-list>
-          <!-- <v-list-item to="/inicio" prepend-icon="mdi-home">Inicio</v-list-item> -->
 
           <v-list-group value="users">
             <template #activator="{ props }">
@@ -78,13 +77,10 @@
 import { useTheme } from "vuetify";
 import { ref } from "vue";
 import Notificacoes from '@/components/DashBoard/Notificacoes.vue'
-import { useStore } from 'vuex';
-
-
+import { useStore } from "vuex";
 
 const theme = useTheme();
 const isOpenSBar = ref(true);
-const store = useStore()
 
 const notificacoes = [
   { title: "notificacao 1" },
@@ -92,12 +88,14 @@ const notificacoes = [
   { title: "notificacao 3" },
   { title: "notificacao 4" },
 ];
-
-
 function toggleTheme() {
   theme.global.name.value = theme.global.current.value.dark
     ? "ligth"
     : "dark";
 }
+
+const store = useStore()
+
+
 
 </script>

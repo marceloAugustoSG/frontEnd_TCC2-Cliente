@@ -27,7 +27,7 @@
                                     :append-inner-icon="showCorfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
                                     :type="showCorfirmPassword ? 'text' : 'password'"
                                     @click:append-inner="showCorfirmPassword = !showCorfirmPassword" label="Confirmar Senha"
-                                    :rules="passwordConfirm" required />
+                                    required />
 
 
                                 <v-text-field type="number" v-model="usuario.Paciente.matricula" label="Nº Matricula"
@@ -87,7 +87,7 @@ const matriculaRules = ref([
     value => value.leng
 ])
 const selectTipos = ref(['Aluno', 'Servidor'])
-function submit() {
+async function submit() {
     if (confirmarPassword()) {
         alert(`Nome: ${usuario.Paciente.nome}\n
                    Email: ${usuario.email}\n
@@ -95,8 +95,11 @@ function submit() {
                    Senha Confirmada: ${usuario.confirmPassword}\n
                    Matricula:${usuario.Paciente.matricula}\n
                    Tipo: ${usuario.Paciente.tipo}`)
-
-        store.dispatch('criarUsuario', usuario)
+        try {
+            await store.dispatch('criarUsuario', usuario)
+        } catch (error) {
+            console.log(error)
+        }
     } else {
         alert("senhas diferentes")
     }

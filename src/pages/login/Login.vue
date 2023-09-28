@@ -16,7 +16,7 @@
                   <v-text-field prepend-inner-icon="mdi-form-textbox-password" v-model="usuario.password"
                     :append-inner-icon="showpassword ? 'mdi-eye' : 'mdi-eye-off'
                       " :type="showpassword ? 'text' : 'password'" @click:append-inner="showpassword = !showpassword"
-                    label="Senha" :rules="passwordRules" required />
+                    label="Senha" required />
                   <v-row class="pb-5">
                     <v-col>
                       <v-btn prepend-icon="mdi-account-plus" to="/criarConta" color="secundary" class="w-100">Criar
@@ -50,27 +50,18 @@ let usuario = reactive({
   email: '',
   password: '',
 })
-
-
 const showpassword = ref(false)
-
 const emailRules = ref([
   v => !!v || 'E-mail é obrigatório',
   v => /^[a-zA-Z0-9._%+-]+@edu\.ufes\.br/.test(v) || 'E-mail deve ser válido(@edu.ufes.br)',
 ])
-
-
-function submit() {
-  try {
-    if (store.dispatch('logar', usuario)) {
-
-      router.push({ name: 'dashboard' })
-    }
-
-  } catch (error) {
-    console.log(error)
-  }
-
+async function submit() {
+  await store.dispatch('logar', usuario).then(() => {
+    router.push({ name: 'dashboard' })
+  }).catch((e) => {
+    router.push({ name: 'login' })
+    console.log(e)
+  })
 }
 </script>
 

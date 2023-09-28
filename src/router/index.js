@@ -3,6 +3,7 @@ import {
   createWebHistory
 }
   from "vue-router";
+import { useStore } from "vuex";
 
 const routes =
   [
@@ -13,6 +14,7 @@ const routes =
 
     {
       path: "/login",
+      name: "login",
       component: () => import("@/pages/login/Login"),
     },
     {
@@ -56,5 +58,7 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
+
+
 
 export default router;

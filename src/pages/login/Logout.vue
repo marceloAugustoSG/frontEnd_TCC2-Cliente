@@ -1,10 +1,15 @@
 <template>
-    <v-btn to="/login">Voltar para o login</v-btn>
+    <v-btn @click="logout">Voltar para o login</v-btn>
 </template>
 
-<script>
-export default {
-
+<script setup>
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+const router = useRouter()
+const store = useStore()
+function logout() {
+    store.dispatch('logout')
+    router.push({ name: 'login' })
 }
 </script>
 

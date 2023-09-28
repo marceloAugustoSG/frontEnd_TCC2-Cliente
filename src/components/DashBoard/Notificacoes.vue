@@ -22,10 +22,8 @@ const props = defineProps(
         notificacoes: Array
     }
 )
-
 function apagarNotificacao(index) {
     props.notificacoes.splice(index, 1)
-
 }
 
 
