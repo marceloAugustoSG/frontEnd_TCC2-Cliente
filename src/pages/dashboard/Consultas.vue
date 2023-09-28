@@ -9,9 +9,9 @@
           <v-card-title>{{ consulta.servico }}</v-card-title>
           <v-card-subtitle>
             <v-icon icon="mdi-calendar-heart"></v-icon>
-            {{ consulta.data }}
+            {{ dataFormatada(consulta.data) }}
             <br>
-            <v-icon icon="mdi-clock-outline"></v-icon> {{ consulta.hora }}
+            <v-icon icon="mdi-clock-outline"></v-icon> {{ consulta.data.substring(11, 16) }}
           </v-card-subtitle>
           <v-card-text>
             <p v-if="consulta.observacao.length > 30">
@@ -28,7 +28,6 @@
         </v-card>
       </v-col>
     </v-row>
-
   </v-container>
 </template>
 <script setup>
@@ -44,6 +43,15 @@ onMounted(async () => {
   consultasReady.value = true; // Sinalize que os dados estão prontos
 });
 const consultas = computed(() => store.state.consultas)
+
+
+function dataFormatada(consulta) {
+  const ano = consulta.substring(0, 4)
+  const mes = consulta.substring(5, 7)
+  const dia = consulta.substring(8, 10)
+  return ` ${dia}/${mes}/${ano}`
+}
+
 
 </script>
 
