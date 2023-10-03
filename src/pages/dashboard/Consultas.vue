@@ -1,9 +1,17 @@
 <template>
   <v-container>
+    <v-dialog v-model="isDetalhes">
+      <v-card style="max-width: 500px;">
+        <v-card-title>{{ consultaSelecionada.servico }}</v-card-title>
+        <v-card-item prepend-icon="mdi-calendar-heart"> {{ consultaSelecionada.data }}</v-card-item>
+        <v-card-item prepend-icon="mdi-calendar-heart"> {{ consultaSelecionada.nomeProfissional }}</v-card-item>
+      </v-card>
+    </v-dialog>
     <div class="aviso" v-if="consultas.length === 0">
       <p style="text-align: center;">Nenhuma consulta agendada no momento</p>
     </div>
     <v-row v-else>
+
       <v-col cols="12" md="4" sm="4" v-for="(consulta, index) in consultas " :key="index">
         <v-card>
           <v-card-title>{{ consulta.servico }}</v-card-title>
@@ -23,20 +31,40 @@
           </v-card-text>
           <v-divider></v-divider>
           <v-card-actions>
-            <v-btn>Detalhes</v-btn>
+            <v-btn @click="mostrarDetalhes(consulta)">Detalhes</v-btn>
           </v-card-actions>
         </v-card>
+
       </v-col>
     </v-row>
   </v-container>
 </template>
 <script setup>
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref, onMounted, reactive } from 'vue';
 import { useStore } from 'vuex';
-
 
 const store = useStore()
 const consultasReady = ref(false);
+const isDetalhes = ref(false)
+let isSelecionada = ref('')
+let consultaSelecionada = reactive({
+  data: '',
+  status: '',
+  observacao: '',
+  servico: '',
+  nomeProfissional: ''
+})
+
+
+function mostrarDetalhes(consulta) {
+  isSelecionada = consulta
+  console.log(isSelecionada)
+  consultaSelecionada.data = dataFormatada(consulta.data)
+  consultaSelecionada.servico = consulta.servico
+  consultaSelecionada.nomeProfissional = consulta.Profissional
+  isDetalhes.value = true
+
+}
 
 // Use onMounted para chamar a ação após o componente ser montado
 onMounted(async () => {

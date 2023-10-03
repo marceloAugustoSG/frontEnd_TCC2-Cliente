@@ -83,7 +83,6 @@ function agendar() {
   }, 1000)
 
   if (!data.value || !hora.value || !servico.value) {
-    // alert('campos vazios')
     isInputs.value = true
   } else {
     const novoAgendamento = {
@@ -95,8 +94,6 @@ function agendar() {
     store.dispatch('agendarConsulta', novoAgendamento)
     sucesso.value = true
     showIcon.value = !showIcon.value
-
-
     clearCamposConsulta()
     store.dispatch('listarConsultasPaciente')
   }
@@ -111,8 +108,6 @@ const dataFormatada = reactive(computed(() => {
   const minutesFormat = hora.value.minutes <= 9 ? `0${hora.value.minutes}` : hora.value.minutes
   return `${ano}-${mes}-${dia}T${horaFormat}:${minutesFormat}:00.000Z`;
 }))
-
-
 </script>
 <style scoped></style>
 

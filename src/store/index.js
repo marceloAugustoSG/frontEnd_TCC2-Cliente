@@ -55,6 +55,7 @@ const store = createStore({
         },
         ).then((resposta) => {
           commit('setConsultas', resposta.data.consultas.consultas)
+          console.log(resposta.data.consultas.consultas)
         }).catch((e) => {
           console.log(e)
         })
