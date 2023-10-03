@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div class="aviso" v-if="consultas.length === 0">
-      <p style="text-align: center;">Nenhuma consulta agendada no momento...</p>
+      <p style="text-align: center;">Nenhuma consulta agendada no momento</p>
     </div>
     <v-row v-else>
       <v-col cols="12" md="4" sm="4" v-for="(consulta, index) in consultas " :key="index">
@@ -34,16 +34,17 @@
 import { computed, ref, onMounted } from 'vue';
 import { useStore } from 'vuex';
 
+
 const store = useStore()
 const consultasReady = ref(false);
 
 // Use onMounted para chamar a ação após o componente ser montado
 onMounted(async () => {
+
   await store.dispatch('listarConsultasPaciente');
   consultasReady.value = true; // Sinalize que os dados estão prontos
 });
 const consultas = computed(() => store.state.consultas)
-
 
 function dataFormatada(consulta) {
   const ano = consulta.substring(0, 4)
@@ -51,7 +52,6 @@ function dataFormatada(consulta) {
   const dia = consulta.substring(8, 10)
   return ` ${dia}/${mes}/${ano}`
 }
-
 
 </script>
 

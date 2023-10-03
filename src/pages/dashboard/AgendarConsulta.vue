@@ -31,9 +31,16 @@
     <template>
       <v-dialog v-model="isInputs" max-width="500">
         <v-card>
-          <Alert />
+          <Alert type="warning" title="Aviso" text="Campo(s) Vazio(s)" variant="outlined" />
         </v-card>
       </v-dialog>
+      <v-dialog v-model="sucesso" max-width="500">
+        <v-card>
+          <Alert type="success" title="Aviso" text="Consulta agendada " variant="outlined" />
+        </v-card>
+      </v-dialog>
+
+
     </template>
   </v-container>
 
@@ -51,6 +58,7 @@ import Alert from "@/components/Alert.vue";
 let loading = ref(false)
 let showIcon = ref(false)
 let isInputs = ref(false)
+let sucesso = ref(false)
 const required = ref(true)
 const store = useStore()
 
@@ -68,7 +76,11 @@ function clearCamposConsulta() {
 
 function agendar() {
   loading.value = true
-  setTimeout(() => (loading.value = false), 1000)
+  sucesso.value = true
+  setTimeout(() => {
+    loading.value = false
+    sucesso.value = false
+  }, 1000)
 
   if (!data.value || !hora.value || !servico.value) {
     // alert('campos vazios')
@@ -81,11 +93,12 @@ function agendar() {
       servico: servico.value,
     }
     store.dispatch('agendarConsulta', novoAgendamento)
-    store.dispatch('listarConsultasPaciente')
+    sucesso.value = true
     showIcon.value = !showIcon.value
 
 
     clearCamposConsulta()
+    store.dispatch('listarConsultasPaciente')
   }
 }
 
@@ -96,10 +109,7 @@ const dataFormatada = reactive(computed(() => {
   const ano = dataF.getFullYear();
   const horaFormat = hora.value.hours <= 9 ? `0${hora.value.hours}` : hora.value.hours
   const minutesFormat = hora.value.minutes <= 9 ? `0${hora.value.minutes}` : hora.value.minutes
-
   return `${ano}-${mes}-${dia}T${horaFormat}:${minutesFormat}:00.000Z`;
-
-
 }))
 
 

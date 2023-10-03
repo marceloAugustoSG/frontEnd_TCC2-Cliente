@@ -37,7 +37,7 @@
 
                                 <v-row class="pb-5">
                                     <v-col>
-                                        <v-btn to="/login" class="w-100" color="primary">Voltar para o
+                                        <v-btn @click="backtoLogin" class="w-100" color="primary">Voltar para o
                                             Login</v-btn>
                                     </v-col>
 
@@ -54,12 +54,47 @@
                 <v-col cols="12" lg="3" md="2" sm="2" xl="4" />
             </v-col>
         </v-row>
+        <v-dialog v-model="isUserCreated" max-width="500">
+            <v-card>
+                <Alert type="success" title="Aviso" text="Usuario criado com sucesso" variant="outlined" />
+            </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="isUserCreated" max-width="500">
+            <v-card>
+                <Alert type="success" title="Aviso" text="Usuario criado com sucesso" variant="outlined" />
+            </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="differentPass" max-width="500">
+            <v-card>
+                <Alert type="warning" title="Aviso" text="Senhas diferentes" variant="outlined" />
+            </v-card>
+        </v-dialog>
+        <v-dialog v-model="isCheckEmail" max-width="500">
+            <v-card>
+                <Alert type="warning" title="Aviso" text="Email deve ser : email@edu.ufes.br" variant="outlined" />
+            </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="isUserExist" max-width="500">
+            <v-card>
+                <Alert type="warning" title="Aviso" text="Já existe um usuario com esse email" variant="outlined" />
+            </v-card>
+        </v-dialog>
     </v-container>
 </template>
 <script setup>
 import { ref, reactive } from "vue"
+import { useRouter } from "vue-router";
 import { useStore } from "vuex"
+import Alert from "@/components/Alert.vue";
 const store = useStore();
+const router = useRouter();
+let differentPass = ref(false)
+let isCheckEmail = ref(false)
+let isUserCreated = ref(false)
+let isUserExist = ref(false)
 let usuario = reactive({
     email: '',
     password: '',
@@ -87,25 +122,58 @@ const matriculaRules = ref([
     value => value.leng
 ])
 const selectTipos = ref(['Aluno', 'Servidor'])
+
 async function submit() {
-    if (confirmarPassword()) {
-        alert(`Nome: ${usuario.Paciente.nome}\n
-                   Email: ${usuario.email}\n
-                   Senha: ${usuario.password}\n
-                   Senha Confirmada: ${usuario.confirmPassword}\n
-                   Matricula:${usuario.Paciente.matricula}\n
-                   Tipo: ${usuario.Paciente.tipo}`)
-        try {
-            await store.dispatch('criarUsuario', usuario)
-        } catch (error) {
-            console.log(error)
+    try {
+        await store.dispatch('criarUsuario', usuario)
+
+        if (store.state.message === "usuario criado com sucesso!") {
+            isUserCreated.value = true
+            setInterval(() => {
+                isUserCreated.value = false
+            }, 2500)
+
         }
-    } else {
-        alert("senhas diferentes")
+        if (store.state.message === 'email nao aceito') {
+            isCheckEmail.value = true
+            setInterval(() => {
+                isCheckEmail.value = false
+            }, 2500)
+            clearInputs()
+        }
+        if (store.state.message === 'usuário ja existe') {
+            isUserExist.value = true
+            setInterval(() => {
+                isUserExist.value = false
+            }, 2500)
+            clearInputs()
+        }
+
+        if (!checkPassoWord()) {
+            differentPass.value = true
+            setInterval(() => {
+                differentPass.value = false
+            }, 2500)
+        }
+    } catch (error) {
+        console.log(error)
     }
 }
-function confirmarPassword() {
+function backtoLogin() {
+    router.push({ name: 'login' })
+}
+function clearInputs() {
+    usuario.Paciente.nome = ''
+    usuario.email = ''
+    usuario.password = ''
+    confirmPassword.value = ''
+    usuario.Paciente.matricula = ''
+    usuario.Paciente.tipo = ''
+}
+
+function checkPassoWord() {
     return usuario.password === confirmPassword.value ? true : false
+
 }
 </script>
 <style>

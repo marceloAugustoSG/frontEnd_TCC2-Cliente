@@ -1,7 +1,6 @@
 import { createStore } from "vuex";
 import apiUsuario from "@/services/apiUsuario"
 import { http } from "@/services/axiosConfig";
-import { useRouter } from "vue-router";
 const store = createStore({
   state: {
     user: {
@@ -11,38 +10,29 @@ const store = createStore({
     message: '',
     pacienteId: '',
     isLogado: false,
-    consultas: []
+    consultas: [],
   },
   mutations: {
 
     setConsultas(state, consultas) {
       state.consultas = consultas
-
     },
-
     setIsLogado(state, logado) {
       state.isLogado = logado
     },
-
     setPacienteId(state, novoIdPaciente) {
       state.pacienteId = novoIdPaciente
     },
-
     setToken(state, newToken) {
       state.token = newToken
     },
 
-    getMessage(state) {
-      return state.message
-    },
     setMessage(state, newMessage) {
       state.message = newMessage
     },
-
     dataUser(state, newUser) {
       state.user = newUser
     },
-
     addUsuario(state, novoUsuario) {
       state.usuario = novoUsuario
     }
@@ -51,6 +41,7 @@ const store = createStore({
 
   },
   actions: {
+
 
     //agendamentos
     async listarConsultasPaciente({ commit }) {
@@ -63,13 +54,10 @@ const store = createStore({
           }
         },
         ).then((resposta) => {
-          // console.log(resposta.data.consultas.consultas)
           commit('setConsultas', resposta.data.consultas.consultas)
-
-        }).catch((e) => console.log({ message: `${e}` }))
-
-      } else {
-        console.log('paciente id nao encontrado')
+        }).catch((e) => {
+          console.log(e)
+        })
       }
     },
 
@@ -80,40 +68,38 @@ const store = createStore({
     },
 
     async criarUsuario({ commit }, novoUsuario) {
-      await apiUsuario.criarUsuario(novoUsuario).then((res) => {
-        commit('addUsuario', res.data)
-        console.log(res.data)
+      await http.post("usuario", novoUsuario).then((res) => {
+        console.log(res)
+        commit('setMessage', res.data.message)
       }).catch((e) => {
-        commit('setMessage', e.response.message)
-        console.log(e.response.data.message)
+        commit('setMessage', e.response.data.message)
+
       })
     },
-
     async logar({ commit }, usuario) {
-      const router = useRouter()
       try {
         const dados = await apiUsuario.logar(usuario)
         const { token } = dados.data
         localStorage.setItem('token', JSON.stringify(token))
         localStorage.setItem('pacienteId', JSON.stringify(dados.data.usuario.Paciente.id))
         commit('setIsLogado', true)
-        console.log(`logado? : ${this.state.isLogado}`)
-        this.dispatch('listarConsultasPaciente')
+        if (this.state.isLogado) {
+          this.dispatch('listarConsultasPaciente')
+        }
       } catch (error) {
         console.log(error.response.data.message)
-        commit('setMessage', error.response.data.message)
-        console.log(`mensagem do state: ${this.state.message}`)
-        commit('setIsLogado', false)
-        console.log(`logado? : ${this.state.isLogado}`)
+        localStorage.setItem('message', JSON.stringify(error.response.data.message))
+        return;
       }
     },
-
     logout({ commit }) {
       localStorage.removeItem('token')
       localStorage.removeItem('pacienteId')
+      localStorage.removeItem('message')
+      this.state.message = ''
+      this.state.consultas = []
     }
   }
-
 })
 
 export default store;

@@ -1,9 +1,6 @@
-import {
-  createRouter,
-  createWebHistory
-}
-  from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import { useStore } from "vuex";
+
 
 const routes =
   [
@@ -28,7 +25,17 @@ const routes =
     {
       name: "dashboard",
       path: "/dashBoard",
+      beforeEnter: (to, from, next) => {
+        const autenticado = localStorage.getItem('token')
+        if (autenticado) {
+          next()
+        } else {
+          next('login')
+        }
+      },
+
       component: () => import("@/pages/dashboard/Dashboard.vue"),
+
       children: [
         {
           path: "/inicio",

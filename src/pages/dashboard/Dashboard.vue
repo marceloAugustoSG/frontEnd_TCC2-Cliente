@@ -77,10 +77,11 @@
 import { useTheme } from "vuetify";
 import { ref } from "vue";
 import Notificacoes from '@/components/DashBoard/Notificacoes.vue'
-import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 const theme = useTheme();
 const isOpenSBar = ref(true);
+const router = useRouter()
 
 const notificacoes = [
   { title: "notificacao 1" },
@@ -94,7 +95,7 @@ function toggleTheme() {
     : "dark";
 }
 
-const store = useStore()
+
 
 
 

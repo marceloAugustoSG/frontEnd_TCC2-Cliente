@@ -1,5 +1,10 @@
 <template>
-  <v-app class="">
+  <v-app>
+    <v-dialog v-model="alertMessage" max-width="500">
+      <v-card>
+        <Alert type="error" title="Aviso" variant="outlined" text="email ou senha incorretos" />
+      </v-card>
+    </v-dialog>
     <v-container class="fill-height">
       <v-row class="p-4">
         <v-col cols="12" lg="3" md="2" sm="2" xl="4"></v-col>
@@ -41,10 +46,11 @@
 import { ref, reactive } from "vue";
 import { useStore } from "vuex"
 import { useRouter } from "vue-router";
+import Alert from "@/components/Alert.vue";
 
 const store = useStore();
 const router = useRouter();
-
+let alertMessage = ref(false)
 
 let usuario = reactive({
   email: '',
@@ -56,13 +62,18 @@ const emailRules = ref([
   v => /^[a-zA-Z0-9._%+-]+@edu\.ufes\.br/.test(v) || 'E-mail deve ser válido(@edu.ufes.br)',
 ])
 async function submit() {
+
   await store.dispatch('logar', usuario).then(() => {
+
+    const message = localStorage.getItem('message')
+    message ? alertMessage.value = true : alertMessage.value = false
     router.push({ name: 'dashboard' })
   }).catch((e) => {
-    router.push({ name: 'login' })
     console.log(e)
   })
+
 }
+
 </script>
 
 <style>
