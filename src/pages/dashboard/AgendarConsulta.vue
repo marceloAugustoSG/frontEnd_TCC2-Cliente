@@ -87,7 +87,7 @@ function agendar() {
   } else {
     const novoAgendamento = {
       data: dataFormatada.value,
-      status: "agendado",
+      status: "Agendada",
       observacao: (!observacao.value ? 'Nenhuma observação' : observacao.value),
       servico: servico.value,
     }

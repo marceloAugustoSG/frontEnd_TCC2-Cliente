@@ -3,8 +3,19 @@
     <v-dialog v-model="isDetalhes">
       <v-card style="max-width: 500px;">
         <v-card-title>{{ consultaSelecionada.servico }}</v-card-title>
-        <v-card-item prepend-icon="mdi-calendar-heart"> {{ consultaSelecionada.data }}</v-card-item>
-        <v-card-item prepend-icon="mdi-calendar-heart"> {{ consultaSelecionada.nomeProfissional }}</v-card-item>
+        <v-card-subtitle>
+          <strong>Data:</strong> {{ consultaSelecionada.data }} | <strong>Horário:</strong> {{ consultaSelecionada.hora }}
+        </v-card-subtitle>
+        <v-divider />
+        <v-card-item>
+          <strong>Status:</strong> {{ consultaSelecionada.status }}<br>
+          <strong>Profissional:</strong> Dr. {{ consultaSelecionada.nomeProfissional }} - {{
+            consultaSelecionada.especialidade }}<br>
+          <strong>Local:</strong> Castelinho<br>
+        </v-card-item>
+        <v-card-item />
+
+
       </v-card>
     </v-dialog>
     <div class="aviso" v-if="consultas.length === 0">
@@ -32,6 +43,7 @@
           <v-divider></v-divider>
           <v-card-actions>
             <v-btn @click="mostrarDetalhes(consulta)">Detalhes</v-btn>
+            <v-btn>Cancelar consulta</v-btn>
           </v-card-actions>
         </v-card>
 
@@ -49,19 +61,24 @@ const isDetalhes = ref(false)
 let isSelecionada = ref('')
 let consultaSelecionada = reactive({
   data: '',
+  hora: '',
   status: '',
   observacao: '',
   servico: '',
-  nomeProfissional: ''
+  nomeProfissional: '',
+  especialidade: ''
 })
 
 
 function mostrarDetalhes(consulta) {
   isSelecionada = consulta
   console.log(isSelecionada)
+  consultaSelecionada.status = consulta.status
   consultaSelecionada.data = dataFormatada(consulta.data)
+  consultaSelecionada.hora = consulta.data.substring(11, 16)
   consultaSelecionada.servico = consulta.servico
-  consultaSelecionada.nomeProfissional = consulta.Profissional
+  consultaSelecionada.nomeProfissional = consulta.Profissional.nome
+  consultaSelecionada.especialidade = consulta.Profissional.especialidade
   isDetalhes.value = true
 
 }
@@ -85,4 +102,11 @@ function dataFormatada(consulta) {
 
 <style></style>
 
-<style></style>
+<style>
+.statusAgendada {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #FF5722;
+}
+</style>
