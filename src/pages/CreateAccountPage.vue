@@ -3,7 +3,7 @@
         <v-row class=" p-4">
             <v-col cols="12" lg="3" md="2" sm="2" xl="4"></v-col>
             <v-col cols="12" lg="6" md="8" sm="8" xl="4">
-                <v-card>
+                <v-card elevation="10">
                     <v-card-text>
                         <h2 class="text-center">Crie sua conta</h2>
                     </v-card-text>
@@ -11,12 +11,11 @@
                         <v-card-item>
                             <form @submit.prevent="submit">
 
-                                <v-text-field prepend-inner-icon="mdi-account" v-model="usuario.Paciente.nome" label="Nome"
-                                    required />
-                                <v-text-field prepend-inner-icon="mdi-email" v-model="usuario.email" :rules="emailRules"
+                                <v-text-field prepend-inner-icon="mdi-account" v-model="nome" label="Nome" required />
+                                <v-text-field prepend-inner-icon="mdi-email" v-model="email" :rules="emailRules"
                                     label="E-mail" required />
 
-                                <v-text-field prepend-inner-icon="mdi-form-textbox-password" v-model="usuario.password"
+                                <v-text-field prepend-inner-icon="mdi-form-textbox-password" v-model="password"
                                     :append-inner-icon="showpassword ? 'mdi-eye' : 'mdi-eye-off'"
                                     :type="showpassword ? 'text' : 'password'"
                                     @click:append-inner="showpassword = !showpassword" label="Senha" :rules="passwordRules"
@@ -30,10 +29,13 @@
                                     required />
 
 
-                                <v-text-field type="number" v-model="usuario.Paciente.matricula" label="Nº Matricula"
+                                <v-text-field type="number" v-model="matricula" label="Nº Matricula"
                                     :rules="matriculaRules" />
 
-                                <v-select label="Tipo" v-model="usuario.Paciente.tipo" :items="selectTipos"></v-select>
+                                <v-select label="Vinculo com a UFES" v-model="tipo" :items="selectTipos"></v-select>
+
+
+                                <v-text-field type="date" v-model="data" label="Data de Nascimento" />
 
                                 <v-row class="pb-5">
                                     <v-col>
@@ -45,7 +47,6 @@
                                         <v-btn type="submit" class="w-100" color="create">Criar
                                             Conta</v-btn>
                                     </v-col>
-
                                 </v-row>
                             </form>
                         </v-card-item>
@@ -54,15 +55,10 @@
                 <v-col cols="12" lg="3" md="2" sm="2" xl="4" />
             </v-col>
         </v-row>
-        <v-dialog v-model="isUserCreated" max-width="500">
-            <v-card>
-                <Alert type="success" title="Aviso" text="Usuario criado com sucesso" variant="outlined" />
-            </v-card>
-        </v-dialog>
 
         <v-dialog v-model="isUserCreated" max-width="500">
             <v-card>
-                <Alert type="success" title="Aviso" text="Usuario criado com sucesso" variant="outlined" />
+                <Alert type="success" title="Aviso" text="Usuário criado com sucesso" variant="outlined" />
             </v-card>
         </v-dialog>
 
@@ -79,13 +75,13 @@
 
         <v-dialog v-model="isUserExist" max-width="500">
             <v-card>
-                <Alert type="warning" title="Aviso" text="Já existe um usuario com esse email" variant="outlined" />
+                <Alert type="warning" title="Aviso" text="Usuário já existente" variant="outlined" />
             </v-card>
         </v-dialog>
     </v-container>
 </template>
 <script setup>
-import { ref, reactive } from "vue"
+import { ref, reactive, computed } from "vue"
 import { useRouter } from "vue-router";
 import { useStore } from "vuex"
 import Alert from "@/components/Alert.vue";
@@ -95,46 +91,50 @@ let differentPass = ref(false)
 let isCheckEmail = ref(false)
 let isUserCreated = ref(false)
 let isUserExist = ref(false)
-let usuario = reactive({
-    email: '',
-    password: '',
-    Paciente: {
-        nome: '',
-        tipo: '',
-        matricula: ''
-    },
-})
+
 let confirmPassword = ref('')
 let showpassword = ref(false)
 let showCorfirmPassword = ref(false)
-const emailRules = ref([
-    v => !!v || 'E-mail é obrigatório e unico',
-    v => /^[a-zA-Z0-9._%+-]+@edu\.ufes\.br/.test(v) || 'E-mail deve ser válido',
-])
-const passwordRules = ref([
-    v => !!v || 'Senha é obrigatoria',
-])
-const matriculaRules = ref([
-    value => !!value || "Campo obrigatório",
-    value =>
-        (value && /^\d{10}$/.test(value)) ||
-        "A matricula deve ter exatamente 10 números",
-    value => value.leng
-])
-const selectTipos = ref(['Aluno', 'Servidor'])
+let showDialog = ref(false)
+
+let nome = ref('')
+let email = ref('')
+let password = ref('')
+let matricula = ref('')
+let tipo = ref('')
+let data = ref('')
+
+
+
+
+const selectTipos = ref(['Aluno', 'Docente', 'Técnico Administrativo'])
 
 async function submit() {
+
+    const novoPaciente = {
+        email: email.value,
+        password: password.value,
+        Paciente: {
+            nome: nome.value,
+            tipo: tipo.value,
+            matricula: matricula.value,
+            dataNascimento: dataFormatada.value
+        }
+    }
+
     try {
-        await store.dispatch('criarUsuario', usuario)
+        await store.dispatch('criarUsuario', novoPaciente)
+
 
         if (store.state.message === "usuario criado com sucesso!") {
             isUserCreated.value = true
             setInterval(() => {
                 isUserCreated.value = false
             }, 2500)
+            clearInputs()
 
         }
-        if (store.state.message === 'email nao aceito') {
+        if (store.state.message === 'email não aceito') {
             isCheckEmail.value = true
             setInterval(() => {
                 isCheckEmail.value = false
@@ -163,18 +163,55 @@ function backtoLogin() {
     router.push({ name: 'login' })
 }
 function clearInputs() {
-    usuario.Paciente.nome = ''
-    usuario.email = ''
-    usuario.password = ''
-    confirmPassword.value = ''
-    usuario.Paciente.matricula = ''
-    usuario.Paciente.tipo = ''
+    nome.value = ''
+    email.value = ''
+    password.value = ''
+    confirmPassword.value
+    matricula.value = ''
+    tipo.value = ''
+    data.value = ''
 }
 
 function checkPassoWord() {
-    return usuario.password === confirmPassword.value ? true : false
-
+    return password.value === confirmPassword.value ? true : false
 }
+
+
+const dataFormatada = reactive(computed(() => {
+    const dataF = new Date(data.value)
+    const dia = String(dataF.getDate() + 1).padStart(2, "0");
+    const mes = String(dataF.getMonth() + 1).padStart(2, "0");
+    const ano = dataF.getFullYear();
+    return `${ano}-${mes}-${dia}T00:00:00.000Z`;
+}))
+
+// const dataFormatada = reactive(computed(() => {
+//     const dataF = new Date(data.value);
+//     const dia = String(dataF.getDate()).padStart(2, "0");
+//     const mes = String(dataF.getMonth() + 1).padStart(2, "0");
+//     const ano = dataF.getFullYear();
+//     const horaFormat = hora.value.hours <= 9 ? `0${hora.value.hours}` : hora.value.hours
+//     const minutesFormat = hora.value.minutes <= 9 ? `0${hora.value.minutes}` : hora.value.minutes
+//     return `${ano}-${mes}-${dia}T${horaFormat}:${minutesFormat}:00.000Z`;
+// }))
+
+
+
+const emailRules = ref([
+    v => !!v || 'E-mail é obrigatório e unico',
+    v => /^[a-zA-Z0-9._%+-]+@edu\.ufes\.br/.test(v) || 'E-mail deve ser válido',
+])
+const passwordRules = ref([
+    v => !!v || 'Senha é obrigatoria',
+])
+const matriculaRules = ref([
+    value => !!value || "Campo obrigatório",
+    value =>
+        (value && /^\d{10}$/.test(value)) ||
+        "A matricula deve ter exatamente 10 números",
+    value => value.leng
+])
+
 </script>
 <style>
 .text-center {

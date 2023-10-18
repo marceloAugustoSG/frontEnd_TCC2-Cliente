@@ -8,11 +8,22 @@ const store = createStore({
       password: String
     },
     message: '',
+    paciente: {
+      nome: String,
+      tipo: String,
+      matricula: String,
+      dataNacimento: String
+
+    },
     pacienteId: '',
     isLogado: false,
     consultas: [],
   },
   mutations: {
+
+    setPaciente(state, payload) {
+      state.paciente = payload
+    },
 
     setConsultas(state, consultas) {
       state.consultas = consultas
@@ -67,6 +78,22 @@ const store = createStore({
         console.log(res)
       }).catch((e) => console.log(e))
     },
+
+    // async criarUsuario({ commit }, novoUsuario) {
+    //   try {
+    //     const resposta = await http.post("usuario", novoUsuario);
+    //     const mensage = resposta.data.message;
+    //     console.log(mensage);
+    //     commit('setMessage', mensage)
+    //     console.log(this.state.message)
+    //   } catch (error) {
+    //     // commit('setMessage', error.data.message)
+    //     console.error("Erro ao criar usuário:", error.response.data);
+    //     commit('setMessage', error.response.data)
+    //     console.error(this.state.message);
+    //     throw error; // Lança o erro novamente para que ele possa ser tratado no nível superior
+    //   }
+    // },
 
     async criarUsuario({ commit }, novoUsuario) {
       await http.post("usuario", novoUsuario).then((res) => {

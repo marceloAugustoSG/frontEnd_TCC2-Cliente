@@ -1,69 +1,40 @@
 <template>
   <v-container class="pa-1">
-    <form @submit.prevent="agendar">
-      <v-row>
-        <v-col cols="12" xl="12" sm="8">
-          <VueDatePicker :required="required" placeholder="Data" locale="pt-BR" :enable-time-picker="false" v-model="data"
-            :disabled-week-days="[6, 0]" :min-date="new Date()" />
-        </v-col>
-
-        <v-col cols="12" xl="12" sm="4">
-          <VueDatePicker required v-model="hora" time-picker disable-time-range-validation placeholder="Horário"
-            :start-time="{ hours: 8, minutes: 0 }" :max-time="{ hours: 17, minutes: 0 }" no-minutes-overlay
-            minutes-increment="30" />
-        </v-col>
-
-        <v-col cols="12" md="12">
-          <v-select v-model="servico" label="Serviço" :items="[
-            'Atendimento Odontológico',
-            'Atendimento Médico',
-            'Atendimento Psicológico',
-          ]" requerid />
-        </v-col>
-        <v-col cols="12" md="12">
-          <v-textarea label="Observações" v-model="observacao" />
-        </v-col>
-      </v-row>
-      <v-btn :loading="loading" block @click="agendar" color="primary" :append-icon="showIcon ? 'mdi-check-circle' : ''">
-        Agendar
-      </v-btn>
-    </form>
-    <template>
-      <v-dialog v-model="isInputs" max-width="500">
-        <v-card>
-          <Alert type="warning" title="Aviso" text="Campo(s) Vazio(s)" variant="outlined" />
-        </v-card>
-      </v-dialog>
-      <v-dialog v-model="sucesso" max-width="500">
-        <v-card>
-          <Alert type="success" title="Aviso" text="Consulta agendada " variant="outlined" />
-        </v-card>
-      </v-dialog>
-
-
-    </template>
+    <v-card class="pa-5" elevation="10">
+      <form @submit.prevent="submit">
+        <v-row>
+          <v-col>
+            <v-text-field label="Seu nome" v-model="teste" disabled="" />
+          </v-col>
+          <v-col cols="12" md="12">
+            <v-select v-model="servico" label="Serviço" :items="[
+              'Atendimento Odontológico',
+              'Atendimento Médico',
+              'Atendimento Psicológico',
+            ]" required />
+          </v-col>
+          <v-col cols="12" md="12">
+            <v-textarea label="Observações" v-model="observacao" />
+          </v-col>
+        </v-row>
+        <v-btn type="submit" :loading="loading" block color="primary" :append-icon="showIcon ? 'mdi-check-circle' : ''"
+          text="Solicitar Consulta" />
+      </form>
+    </v-card>
   </v-container>
-
-  <p>{{ data }}</p>
-  <p>{{ hora }}</p>
-  <p>{{ dataFormatada }}</p>
 </template>
 
 <script setup>
-import VueDatePicker from "@vuepic/vue-datepicker";
 import { ref, computed, reactive } from 'vue';
 import { useStore } from "vuex";
 import Alert from "@/components/Alert.vue";
 
+
+
 let loading = ref(false)
 let showIcon = ref(false)
-let isInputs = ref(false)
 let sucesso = ref(false)
-const required = ref(true)
 const store = useStore()
-
-const data = ref('')
-const hora = ref('')
 const servico = ref('')
 const observacao = ref('')
 
@@ -74,40 +45,39 @@ function clearCamposConsulta() {
   observacao.value = ''
 }
 
-function agendar() {
+async function submit() {
+
+  console.log('teste')
   loading.value = true
   sucesso.value = true
   setTimeout(() => {
     loading.value = false
     sucesso.value = false
   }, 1000)
-
-  if (!data.value || !hora.value || !servico.value) {
-    isInputs.value = true
-  } else {
-    const novoAgendamento = {
-      data: dataFormatada.value,
-      status: "Agendada",
-      observacao: (!observacao.value ? 'Nenhuma observação' : observacao.value),
-      servico: servico.value,
-    }
-    store.dispatch('agendarConsulta', novoAgendamento)
-    sucesso.value = true
-    showIcon.value = !showIcon.value
-    clearCamposConsulta()
-    store.dispatch('listarConsultasPaciente')
+  const novoAgendamento = {
+    status: "Agendada",
+    observacao: (!observacao.value ? 'Nenhuma observação' : observacao.value),
+    servico: servico.value
   }
+  await store.dispatch('agendarConsulta', novoAgendamento)
+  sucesso.value = true
+  showIcon.value = !showIcon.value
+  clearCamposConsulta()
+  store.dispatch('listarConsultasPaciente')
 }
 
-const dataFormatada = reactive(computed(() => {
-  const dataF = new Date(data.value);
-  const dia = String(dataF.getDate()).padStart(2, "0");
-  const mes = String(dataF.getMonth() + 1).padStart(2, "0");
-  const ano = dataF.getFullYear();
-  const horaFormat = hora.value.hours <= 9 ? `0${hora.value.hours}` : hora.value.hours
-  const minutesFormat = hora.value.minutes <= 9 ? `0${hora.value.minutes}` : hora.value.minutes
-  return `${ano}-${mes}-${dia}T${horaFormat}:${minutesFormat}:00.000Z`;
-}))
+// const dataFormatada = reactive(computed(() => {
+//   const dataF = new Date(data.value);
+//   const dia = String(dataF.getDate()).padStart(2, "0");
+//   const mes = String(dataF.getMonth() + 1).padStart(2, "0");
+//   const ano = dataF.getFullYear();
+//   const horaFormat = hora.value.hours <= 9 ? `0${hora.value.hours}` : hora.value.hours
+//   const minutesFormat = hora.value.minutes <= 9 ? `0${hora.value.minutes}` : hora.value.minutes
+//   return `${ano}-${mes}-${dia}T${horaFormat}:${minutesFormat}:00.000Z`;
+// }))
+
+
+
 </script>
 <style scoped></style>
 
