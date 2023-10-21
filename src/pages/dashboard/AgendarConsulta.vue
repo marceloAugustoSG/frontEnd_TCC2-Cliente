@@ -39,8 +39,7 @@ const servico = ref('')
 const observacao = ref('')
 
 function clearCamposConsulta() {
-  data.value = ''
-  hora.value = ''
+
   servico.value = ''
   observacao.value = ''
 }

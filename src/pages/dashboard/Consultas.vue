@@ -1,57 +1,51 @@
 <template>
-  <v-container>
-    <div class="aviso" v-if="consultas.length === 0">
-      <p style="text-align: center;">Nenhuma consulta agendada no momento</p>
-    </div>
-    <v-row v-else>
-      <v-col cols="12" md="10" sm="12" lg="3" v-for="(consulta, index) in consultas " :key="index">
-        <v-card>
-          <v-toolbar elevation="3">
-            <span>{{ consulta.servico }}</span>
-            <v-spacer />
-            <v-menu>
-              <template v-slot:activator="{ props }">
-                <v-btn icon="mdi-dots-vertical" v-bind="props" />
-              </template>
-              <v-list>
-                <v-list-item v-for="(item, index) in items" v-model="opcao" :key="index" :value="index"
-                  @click="teste(opcao)">
-                  <v-list-item-title>{{ item.opcao }}</v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-          </v-toolbar>
-          <v-card-item>
-            <v-card-text>
-              <v-card-item>
-                <p><strong>Status:</strong> {{ consulta.status }}</p>
-              </v-card-item>
-              <v-card-item>
-                <p v-if="consulta.observacao.length > 30">
-                  {{ consulta.observacao.substring(0, 20) + "..." }}
-                </p>
-                <p v-else>
-                  {{ consulta.observacao }}
-                </p>
+  <div class="aviso" v-if="consultas.length === 0">
+    <p style="text-align: center;">Nenhuma consulta agendada no momento</p>
+  </div>
 
-              </v-card-item>
-            </v-card-text>
-          </v-card-item>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+  <div v-else>
+    <v-col v-for="consulta in consultas" :key="consulta.id">
+      <v-card>
+        <v-toolbar>
+          <v-toolbar-title>{{ consulta.servico }}</v-toolbar-title>
+          <v-toolbar-items>
+            <visualizar-consulta :consulta="consulta" />
+          </v-toolbar-items>
+        </v-toolbar>
+        <v-divider />
+        <v-card-item title="Status:">
+          <v-card-subtitle
+            :class="consulta.status === 'Agendada' ? 'text-orange' : consulta.status === 'Confirmada' ? 'text-green' : consulta.status">{{
+              consulta.status
+            }}</v-card-subtitle>
+        </v-card-item>
+        <v-divider />
+        <v-card-item title="Data:" :subtitle="!consulta.data ? 'Ainda não definida' : consulta.data" />
+        <v-divider />
+        <v-card-item title="Observação:" :subtitle="consulta.observacao" />
+
+
+      </v-card>
+    </v-col>
+  </div>
 </template>
 <script setup>
 import { computed, ref, onMounted, reactive } from 'vue';
+import VisualizarConsulta from '@/components/DashBoard/VisualizarConsulta.vue';
 import { useStore } from 'vuex';
 
 const store = useStore()
-const opcao = ref()
+let opcao = ref('')
+let showDialog = ref(false)
 
 
 function teste(opcao) {
-  alert(` marcelo: ${opcao}`)
+  if (opcao === 'Visualizar') {
+    showDialog.value = true
+    // alert('Alert vizualizar')
+  } if (opcao === 'Cancelar') {
+    alert('alert cancelar')
+  }
 }
 let isSelecionada = ref('')
 let consultaSelecionada = reactive({
