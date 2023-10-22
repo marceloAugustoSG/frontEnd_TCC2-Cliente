@@ -59,7 +59,7 @@
             </v-list-item>
 
             <v-list-item to="/agendar" prepend-icon="mdi-calendar-check">
-              <v-list-item-title>Agendar</v-list-item-title>
+              <v-list-item-title>Solicitar</v-list-item-title>
             </v-list-item>
           </v-list-group>
         </v-list>

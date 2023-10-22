@@ -15,11 +15,13 @@
                             </v-card-subtitle>
                         </v-card-item>
                         <v-divider />
-                        <v-card-item title="Data e hora da consulta: " :subtitle="props.consulta.data" />
+                        <div v-show="props.consulta.data">
+                            <v-card-item title="Data e hora da consulta: " :subtitle="dataFormatada(props.consulta.data)" />
+                        </div>
                         <v-divider />
                         <v-card-item title="Local:" subtitle="Castelinho" />
                         <v-divider />
-                        <v-card-item title="Solicitada em : " :subtitle="props.consulta.data_solicitacao" />
+                        <v-card-item title="Solicitada em : " :subtitle="dataFormatada(props.consulta.data_solicitacao)" />
                         <v-divider />
                         <v-card-item v-show="props.consulta.Profissional" title="Profissional:"
                             :subtitle="`${profissional} | ${especialidade}`">
@@ -46,13 +48,26 @@ const dialog = ref(false)
 
 function teste() {
     dialog.value = !dialog.value
-
-
-
-
-
-
 }
+
+
+function dataFormatada(data) {
+    const dataObj = new Date(data);
+    const dia = String(dataObj.getUTCDate()).padStart(2, '0');
+    const mes = String(dataObj.getUTCMonth() + 1).padStart(2, '0'); // Lembre-se que os meses em JavaScript são base 0 (janeiro é 0)
+    const ano = dataObj.getUTCFullYear();
+    const hora = String(dataObj.getUTCHours()).padStart(2, '0');
+    const minuto = String(dataObj.getUTCMinutes()).padStart(2, '0');
+
+    const dataFormatada = `${dia}/${mes}/${ano} ${hora}:${minuto}`;
+    return dataFormatada;
+}
+
+
+
+
+
+
 
 
 

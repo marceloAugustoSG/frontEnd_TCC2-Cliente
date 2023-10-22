@@ -46,14 +46,15 @@ const store = createStore({
     },
     addUsuario(state, novoUsuario) {
       state.usuario = novoUsuario
+    },
+    setPaciente(state, payload) {
+      state.paciente = payload
     }
   },
   getters: {
 
   },
   actions: {
-
-
     //agendamentos
     async listarConsultasPaciente({ commit }) {
       let pacienteId = localStorage.getItem('pacienteId');
@@ -79,22 +80,6 @@ const store = createStore({
       }).catch((e) => console.log(e))
     },
 
-    // async criarUsuario({ commit }, novoUsuario) {
-    //   try {
-    //     const resposta = await http.post("usuario", novoUsuario);
-    //     const mensage = resposta.data.message;
-    //     console.log(mensage);
-    //     commit('setMessage', mensage)
-    //     console.log(this.state.message)
-    //   } catch (error) {
-    //     // commit('setMessage', error.data.message)
-    //     console.error("Erro ao criar usuário:", error.response.data);
-    //     commit('setMessage', error.response.data)
-    //     console.error(this.state.message);
-    //     throw error; // Lança o erro novamente para que ele possa ser tratado no nível superior
-    //   }
-    // },
-
     async criarUsuario({ commit }, novoUsuario) {
       await http.post("usuario", novoUsuario).then((res) => {
         console.log(res)
@@ -107,7 +92,12 @@ const store = createStore({
     async logar({ commit }, usuario) {
       try {
         const dados = await apiUsuario.logar(usuario)
+        const resposta = await dados.data
+
+        commit('setPaciente', resposta.usuario.Paciente)
+        console.log(this.state.paciente)
         const { token } = dados.data
+        console.log(resposta)
         localStorage.setItem('token', JSON.stringify(token))
         localStorage.setItem('pacienteId', JSON.stringify(dados.data.usuario.Paciente.id))
         commit('setIsLogado', true)

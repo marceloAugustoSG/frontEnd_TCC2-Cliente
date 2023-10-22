@@ -25,11 +25,8 @@
 </template>
 
 <script setup>
-import { ref, computed, reactive } from 'vue';
+import { ref } from 'vue';
 import { useStore } from "vuex";
-import Alert from "@/components/Alert.vue";
-
-
 
 let loading = ref(false)
 let showIcon = ref(false)

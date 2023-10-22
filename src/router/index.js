@@ -48,7 +48,7 @@ const routes =
         },
         {
           path: "/agendar",
-          component: () => import("@/pages/dashboard/AgendarConsulta.vue"),
+          component: () => import("@/pages/dashboard/SolicitarConsulta.vue"),
         },
 
         {
