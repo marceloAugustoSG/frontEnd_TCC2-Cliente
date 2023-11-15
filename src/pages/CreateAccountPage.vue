@@ -114,6 +114,7 @@ async function submit() {
     const novoPaciente = {
         email: email.value,
         password: password.value,
+        regra: 'paciente',
         Paciente: {
             nome: nome.value,
             tipo: tipo.value,
@@ -166,7 +167,7 @@ function clearInputs() {
     nome.value = ''
     email.value = ''
     password.value = ''
-    confirmPassword.value
+    confirmPassword.value = ''
     matricula.value = ''
     tipo.value = ''
     data.value = ''

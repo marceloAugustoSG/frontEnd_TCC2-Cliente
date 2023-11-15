@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { useStore } from "vuex";
 
 
 const routes =
@@ -40,6 +39,16 @@ const routes =
         {
           path: "/inicio",
           component: () => import("@/pages/dashboard/Inicio.vue"),
+        },
+
+        {
+          path: "/teste",
+          component: () => import("@/components/DashBoard/FormStepper.vue"),
+        },
+
+        {
+          path: "/teste10",
+          component: () => import("@/components/teste10.vue"),
         },
 
         {

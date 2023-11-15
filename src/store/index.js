@@ -1,5 +1,4 @@
 import { createStore } from "vuex";
-import apiUsuario from "@/services/apiUsuario"
 import { http } from "@/services/axiosConfig";
 const store = createStore({
   state: {
@@ -12,15 +11,12 @@ const store = createStore({
       nome: String,
       tipo: String,
       matricula: String,
-      dataNacimento: String
-
     },
     pacienteId: '',
     isLogado: false,
     consultas: [],
   },
   mutations: {
-
     setPaciente(state, payload) {
       state.paciente = payload
     },
@@ -51,37 +47,40 @@ const store = createStore({
       state.paciente = payload
     }
   },
-  getters: {
 
-  },
+  getters: {},
+
   actions: {
     //agendamentos
     async listarConsultasPaciente({ commit }) {
-      let pacienteId = localStorage.getItem('pacienteId');
-      const token = localStorage.getItem('token')
-      if (pacienteId) {
-        await http.get(`paciente/${pacienteId}/consultas`, {
-          headers: {
-            'Authorization': `Bearer ${JSON.parse(token)}`
-          }
-        },
-        ).then((resposta) => {
-          commit('setConsultas', resposta.data.consultas.consultas)
-          console.log(resposta.data.consultas.consultas)
-        }).catch((e) => {
-          console.log(e)
-        })
+      console.log('teste')
+
+      const pacienteId = Number(localStorage.getItem('pacienteId'))
+      try {
+        const consultas = await http.get(`paciente/${pacienteId}/consultas`)
+        console.log(consultas.data.consultas)
+        commit('setPaciente', consultas.data.consultas)
+        const resposta = await consultas.data.consultas.consultas
+        console.log(resposta)
+        commit('setConsultas', resposta)
+      } catch (error) {
+        console.log(error)
+        return
       }
     },
-
     async agendarConsulta({ commit }, novaConsulta) {
-      await apiUsuario.agendarConsulta(novaConsulta).then((res) => {
-        console.log(res)
-      }).catch((e) => console.log(e))
+      try {
+        const consulta = await http.post('consulta', novaConsulta)
+        const resposta = await consulta.data
+        console.log(resposta)
+      } catch (error) {
+        console.log(error)
+      }
+
     },
 
     async criarUsuario({ commit }, novoUsuario) {
-      await http.post("usuario", novoUsuario).then((res) => {
+      await http.post('usuario', novoUsuario).then((res) => {
         console.log(res)
         commit('setMessage', res.data.message)
       }).catch((e) => {
@@ -89,28 +88,44 @@ const store = createStore({
 
       })
     },
+    clearMessage({ commit }) {
+      localStorage.removeItem("message");
+
+    },
+    clearLocalStorage({ commit }) {
+      localStorage.clear()
+
+    },
+
     async logar({ commit }, usuario) {
       try {
-        const dados = await apiUsuario.logar(usuario)
+        const dados = await http.post('login', usuario)
         const resposta = await dados.data
-
-        commit('setPaciente', resposta.usuario.Paciente)
-        console.log(this.state.paciente)
+        commit('setPaciente', resposta.usuario.paciente)
+        console.log(this.state.paciente.nome)
+        this.state.message = ''
         const { token } = dados.data
         console.log(resposta)
         localStorage.setItem('token', JSON.stringify(token))
-        localStorage.setItem('pacienteId', JSON.stringify(dados.data.usuario.Paciente.id))
+        localStorage.setItem('pacienteId', JSON.stringify(dados.data.usuario.paciente.id))
         commit('setIsLogado', true)
         if (this.state.isLogado) {
           this.dispatch('listarConsultasPaciente')
         }
       } catch (error) {
-        console.log(error.response.data.message)
-        localStorage.setItem('message', JSON.stringify(error.response.data.message))
         return;
       }
     },
     logout({ commit }) {
+      localStorage.removeItem('token')
+      localStorage.removeItem('pacienteId')
+      localStorage.removeItem('message')
+      this.state.message = ''
+      this.state.consultas = []
+    },
+
+    init({ commit }) {
+
       localStorage.removeItem('token')
       localStorage.removeItem('pacienteId')
       localStorage.removeItem('message')

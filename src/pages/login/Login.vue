@@ -43,7 +43,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { useStore } from "vuex"
 import { useRouter } from "vue-router";
 import Alert from "@/components/Alert.vue";
@@ -73,6 +73,12 @@ async function submit() {
   })
 
 }
+
+onMounted(() => {
+
+  store.dispatch('init')
+})
+
 
 </script>
 

@@ -61,6 +61,12 @@
             <v-list-item to="/agendar" prepend-icon="mdi-calendar-check">
               <v-list-item-title>Solicitar</v-list-item-title>
             </v-list-item>
+            <v-list-item to="/teste" prepend-icon="mdi-google-downasaur">
+              <v-list-item-title>testes</v-list-item-title>
+            </v-list-item>
+            <v-list-item to="/teste10" prepend-icon="mdi-google-downasaur">
+              <v-list-item-title>teste10</v-list-item-title>
+            </v-list-item>
           </v-list-group>
         </v-list>
       </v-navigation-drawer>
@@ -75,10 +81,12 @@
 
 <script setup>
 import { useTheme } from "vuetify";
-import { ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 import Notificacoes from '@/components/DashBoard/Notificacoes.vue'
+import { useStore } from "vuex";
 const theme = useTheme();
 const isOpenSBar = ref(true);
+const store = useStore();
 
 const notificacoes = [
   { title: "notificacao 1" },
@@ -91,4 +99,9 @@ function toggleTheme() {
     ? "ligth"
     : "dark";
 }
+
+onBeforeMount(() => {
+  store.dispatch('clearMessage')
+
+})
 </script>

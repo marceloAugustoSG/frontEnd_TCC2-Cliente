@@ -6,6 +6,7 @@ import "vuetify/styles";
 // Composables
 import { createVuetify } from "vuetify";
 import { VuetifyDateAdapter } from "vuetify/labs/date/adapters/vuetify";
+import { VStepper } from 'vuetify/labs/VStepper'
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 
@@ -46,6 +47,9 @@ const dark = {
 export default createVuetify({
   date: {
     adapter: VuetifyDateAdapter,
+  },
+  components: {
+    VStepper,
   },
 
   theme: {
