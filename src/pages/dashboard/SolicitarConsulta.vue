@@ -11,7 +11,6 @@
           </v-col>
           <v-col cols="12" md="12">
             <v-select v-model="servico" label="Serviço" :items="[
-
               'Atendimento Médico',
               'Atendimento Psicológico',
             ]" required />
@@ -29,11 +28,12 @@
           text="Solicitar Consulta" />
       </form>
     </v-card>
+
   </v-container>
 </template>
 
 <script setup>
-import { computed, onBeforeMount, ref } from 'vue';
+import { computed, onBeforeMount, reactive, ref } from 'vue';
 import { useStore } from "vuex";
 import teste from '@/components/DashBoard/FormStepper.vue'
 import dialogMensagem from './dialogMensagem.vue';
@@ -52,10 +52,17 @@ function clearCamposConsulta() {
 }
 onBeforeMount(async () => {
 
-  await store.dispatch('listarConsultasPaciente');
-
+  try {
+    await store.dispatch('getPaciente')
+  } catch (error) {
+    console.error(error)
+  }
 })
+
+
 const paciente = computed(() => store.state.paciente)
+
+
 
 async function submit() {
   loading.value = true
@@ -68,7 +75,8 @@ async function submit() {
     status: "Agendada",
     observacao: (!observacao.value ? 'Nenhuma observação' : observacao.value),
     servico: servico.value,
-    pacienteId: Number(localStorage.getItem('pacienteId'))
+    pacienteId: Number(localStorage.getItem('pacienteId')),
+    respostas: null
   }
 
   if (novoAgendamento.servico === 'Atendimento Médico') {
@@ -78,7 +86,14 @@ async function submit() {
     clearCamposConsulta()
     store.dispatch('listarConsultasPaciente')
   } else if (novoAgendamento.servico === 'Atendimento Psicológico') {
-
+    novoAgendamento.respostas = store.state.respostas
+    console.log(store.state.respostas)
+    console.log(novoAgendamento.respostas)
+    await store.dispatch('agendarConsulta', novoAgendamento)
+    console.log('Consulta para psicologo')
+    sucesso.value = true
+    showIcon.value = !showIcon.value
+    clearCamposConsulta()
   }
 }
 

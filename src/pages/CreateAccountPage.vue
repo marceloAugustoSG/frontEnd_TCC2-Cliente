@@ -26,16 +26,18 @@
                                     :append-inner-icon="showCorfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
                                     :type="showCorfirmPassword ? 'text' : 'password'"
                                     @click:append-inner="showCorfirmPassword = !showCorfirmPassword" label="Confirmar Senha"
+                                    :rules="passwordRules" required />
+                                <v-text-field type="number" v-model="matricula" label="Nº Matricula" :rules="matriculaRules"
                                     required />
+                                <v-select label="Vinculo com a UFES" v-model="tipo" :items="selectTipos" required />
+                                <v-select v-model="nivel" :items="['Graduação', 'Pós-graduação']"
+                                    label="Você é estudante de" required />
+                                <v-select v-model="curso" :items="cursos" label="Curso" required />
 
 
-                                <v-text-field type="number" v-model="matricula" label="Nº Matricula"
-                                    :rules="matriculaRules" />
-
-                                <v-select label="Vinculo com a UFES" v-model="tipo" :items="selectTipos"></v-select>
 
 
-                                <v-text-field type="date" v-model="data" label="Data de Nascimento" />
+                                <v-text-field type="date" v-model="data" label="Data de Nascimento" required />
 
                                 <v-row class="pb-5">
                                     <v-col>
@@ -103,7 +105,14 @@ let password = ref('')
 let matricula = ref('')
 let tipo = ref('')
 let data = ref('')
+let curso = ref('')
+let nivel = ref('')
 
+
+const cursos = ['Agronomia', 'Engenharia de Alimentos', 'Engenharia Florestal', 'Engenharia Industrial Madeireira', 'Engenharia Química', 'Medicina Veterinária',
+    'Zootecnia', 'Ciência da Computação', 'Ciências Biológicas(Bacharel)', 'Ciências Biológicas(Licenciatura)', 'Farmácia', 'Física(Licenciatura)', 'Geologia', 'Matemática', 'Nutrição'
+    , 'Química(Licenciatura)', 'Sistemas de Informação', 'Ciências Florestais(Mestrado ou Doutorado)', 'Ciências Veterinárias(Mestrado)', 'Ciência e Tecnologia de Alimentos(Mestrado),Engenharia Química(Mestado)', 'Genética e Melhoramento(Mestrado ou Doutorado)',
+    'Produção Vegetal(Mestrado ou Doutorado)', 'Agroquímica(Mestrado)', 'Ensino,Educação Básica e Formação de Professores(Mestrado)']
 
 
 
@@ -115,11 +124,12 @@ async function submit() {
         email: email.value,
         password: password.value,
         regra: 'paciente',
-        Paciente: {
+        paciente: {
             nome: nome.value,
             tipo: tipo.value,
             matricula: matricula.value,
-            dataNascimento: dataFormatada.value
+            dataNascimento: dataFormatada.value,
+            curso: curso.value
         }
     }
 
