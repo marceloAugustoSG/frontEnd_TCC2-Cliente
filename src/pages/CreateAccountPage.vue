@@ -30,13 +30,10 @@
                                 <v-text-field type="number" v-model="matricula" label="Nº Matricula" :rules="matriculaRules"
                                     required />
                                 <v-select label="Vinculo com a UFES" v-model="tipo" :items="selectTipos" required />
-                                <v-select v-model="nivel" :items="['Graduação', 'Pós-graduação']"
-                                    label="Você é estudante de" required />
-                                <v-select v-model="curso" :items="cursos" label="Curso" required />
-
-
-
-
+                                <!-- <v-select v-model="nivel" :items="['Graduação', 'Pós-graduação']"
+                                    label="Você é estudante de" required /> -->
+                                <!-- <v-select v-model="curso" :items="cursos" label="Curso" required /> -->
+                                <v-text-field v-model="curso" :items="cursos" label="Telefone" required />
                                 <v-text-field type="date" v-model="data" label="Data de Nascimento" required />
 
                                 <v-row class="pb-5">
@@ -86,7 +83,7 @@
 import { ref, reactive, computed } from "vue"
 import { useRouter } from "vue-router";
 import { useStore } from "vuex"
-import Alert from "@/components/Alert.vue";
+import Alert from "@/components/mensagens/Alert.vue";
 const store = useStore();
 const router = useRouter();
 let differentPass = ref(false)

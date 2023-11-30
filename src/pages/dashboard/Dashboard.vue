@@ -32,10 +32,6 @@
                 <v-list-item prepend-icon="mdi-account" to="/perfil">
                   <v-list-item-title>Meu Perfil</v-list-item-title>
                 </v-list-item>
-                <v-list-item color="prmary" prepend-icon="mdi-cog" to="/configuracoes">
-                  <v-list-item-title>Configurações</v-list-item-title>
-                </v-list-item>
-
                 <v-list-item prepend-icon="mdi-logout" to="/logout">
                   <v-list-item-title>Sair</v-list-item-title>
                 </v-list-item>
@@ -57,15 +53,8 @@
             <v-list-item to="/consultas" prepend-icon="mdi-list-box-outline">
               <v-list-item-title>Consultas</v-list-item-title>
             </v-list-item>
-
             <v-list-item to="/agendar" prepend-icon="mdi-calendar-check">
               <v-list-item-title>Solicitar</v-list-item-title>
-            </v-list-item>
-            <v-list-item to="/teste" prepend-icon="mdi-google-downasaur">
-              <v-list-item-title>testes</v-list-item-title>
-            </v-list-item>
-            <v-list-item to="/teste10" prepend-icon="mdi-google-downasaur">
-              <v-list-item-title>teste10</v-list-item-title>
             </v-list-item>
           </v-list-group>
         </v-list>
@@ -101,6 +90,7 @@ function toggleTheme() {
 }
 
 onBeforeMount(() => {
+  store.dispatch('init')
   store.dispatch('clearMessage')
 
 })

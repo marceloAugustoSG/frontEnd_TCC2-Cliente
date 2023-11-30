@@ -8,7 +8,7 @@ export const http = axios.create({
 // Adicione um interceptor para atualizar dinamicamente o cabeçalho de autorização
 http.interceptors.request.use(config => {
     const token = localStorage.getItem('token');
-    
+
     // Se o token existir, adicione-o ao cabeçalho de autorização
     if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
@@ -16,6 +16,5 @@ http.interceptors.request.use(config => {
 
     return config;
 }, error => {
-    // Trate erros de requisição aqui
     return Promise.reject(error);
 });

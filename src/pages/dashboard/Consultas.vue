@@ -2,7 +2,7 @@
   <div class="aviso" v-if="consultas.length === 0">
     <p style="text-align: center;">Nenhuma consulta agendada no momento</p>
   </div>
-  <v-row v-else>
+  <v-row v-else-if="consultas && consultas.length > 0">
     <v-col cols="12" sm="6" md="4" lg="4" v-for="consulta in consultas" :key="consulta.id">
       <v-card>
         <v-toolbar>
@@ -13,7 +13,7 @@
         <v-divider />
         <v-card-item title="Status:">
           <v-card-subtitle
-            :class="consulta.status === 'Agendada' ? 'text-orange' : consulta.status === 'Confirmada' ? 'text-green' : consulta.status">{{
+            :class="consulta.status === 'Solicitada' ? 'text-orange' : consulta.status === 'Confirmada' ? 'text-green' : consulta.status">{{
               consulta.status
             }}</v-card-subtitle>
         </v-card-item>

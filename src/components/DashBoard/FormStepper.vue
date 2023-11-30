@@ -4,9 +4,9 @@
             <form @submit.prevent="avancarEtapa">
 
 
-                <v-select v-model="estudanteNivel" :items="['Graduação', 'Pós-graduação']" label="Você é estudante de"
-                    required />
-                <v-select v-model="centro" :items="['CCAE', 'CCENS']" label="Seu Centro é o" required />
+                <v-select v-model="estudanteNivel" :items="['Graduação', 'Pós-graduação', 'Nenhum']"
+                    label="Você é estudante de" required />
+                <v-select v-model="centro" :items="['CCAE', 'CCENS', 'Nenhum']" label="Seu Centro é o" required />
                 <v-select v-model="curso" :items="cursos" label="Seu Curso é" required />
                 <p>Se mudou para vir estudar na UFES?</p>
                 <v-radio-group v-model="mudancaResidencia" required>
@@ -335,7 +335,7 @@ const respostasC = ref({
     problema20: ref()
 })
 
-const cursos = ['Agronomia', 'Engenharia de Alimentos', 'Engenharia Florestal', 'Engenharia Industrial Madeireira', 'Engenharia Química', 'Medicina Veterinária',
+const cursos = ['Nenhum', 'Agronomia', 'Engenharia de Alimentos', 'Engenharia Florestal', 'Engenharia Industrial Madeireira', 'Engenharia Química', 'Medicina Veterinária',
     'Zootecnia', 'Ciência da Computação', 'Ciências Biológicas(Bacharel)', 'Ciências Biológicas(Licenciatura)', 'Farmácia', 'Física(Licenciatura)', 'Geologia', 'Matemática', 'Nutrição'
     , 'Química(Licenciatura)', 'Sistemas de Informação', 'Ciências Florestais(Mestrado ou Doutorado)', 'Ciências Veterinárias(Mestrado)', 'Ciência e Tecnologia de Alimentos(Mestrado),Engenharia Química(Mestado)', 'Genética e Melhoramento(Mestrado ou Doutorado)',
     'Produção Vegetal(Mestrado ou Doutorado)', 'Agroquímica(Mestrado)', 'Ensino,Educação Básica e Formação de Professores(Mestrado)']

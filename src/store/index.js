@@ -9,14 +9,30 @@ const store = createStore({
     },
     message: '',
     paciente: {
+      id: '',
       nome: '',
       tipo: '',
       matricula: '',
     },
     consultas: [],
     respostas: String,
+    isMessageSucesso: false,
+    notificacoes: [],
+    mensagemNotificacao: ''
   },
   mutations: {
+    setMensagemNotificacao(state, payload) {
+      state.mensagemNotificacao = payload
+    },
+
+    setNotificacoes(state, payload) {
+      state.notificacoes = payload
+    },
+
+    setIsMessage(state, payload) {
+      state.isMessageSucesso = payload
+
+    },
     setPaciente(state, payload) {
       state.paciente = payload
     },
@@ -54,15 +70,67 @@ const store = createStore({
     }
   },
 
-  getters: {},
+  getters: {
+    notificacoesPaciente: (state) => {
+      const pacienteId = state.paciente.id;
+      if (pacienteId) {
+        return state.notificacoes.filter(notificacao => notificacao.pacienteId === pacienteId);
+      } else {
+        return [];
+      }
+    }
+
+  },
 
   actions: {
+    setMensagemNotificacao({ commit }, mensagem) {
+      commit('setMensagemNotificacao', mensagem)
+    },
+
+    async excluirNotificacao({ commit }, id) {
+      let notificacaoId = Number(id)
+      try {
+        const resposta = await http.delete(`notificacao/${notificacaoId}`)
+        const data = await resposta.data
+        console.log(data)
+      } catch (error) {
+        console.log(error)
+      }
+
+
+    },
+
+    async listarNotificacoes({ commit }) {
+      try {
+        const resposta = await http.get('notificacoes');
+        const data = resposta.data;
+        commit('setNotificacoes', data);
+        commit('setMensagemNotificacao', data.message);
+        console.log(data.message);
+      } catch (error) {
+        console.error(error);
+        // Se houver uma mensagem de erro no objeto error.response.data, use-a
+        // Caso contrário, use uma mensagem padrão
+        const mensagemErro = error.response ? error.response.data.message : 'Erro ao obter notificações.';
+        commit('setMensagemNotificacao', mensagemErro);
+      }
+    },
+
+
+    IsMessage({ commit }, valor) {
+      commit('setIsMessage', valor)
+      console.log(this.state.isMessageSucesso)
+
+
+    },
+
+
     async getPaciente({ commit }) {
       try {
         const pacienteId = Number(localStorage.getItem('pacienteId'))
         const paciente = await http.get(`paciente/${pacienteId}`)
         console.log(paciente.data)
-        
+
         commit('setPaciente', paciente.data)
         console.log(this.state.paciente)
       } catch (error) {
@@ -85,18 +153,15 @@ const store = createStore({
 
     //agendamentos
     async listarConsultasPaciente({ commit }) {
-      console.log('teste')
-      const pacienteId = Number(localStorage.getItem('pacienteId'))
-      try {
-        const consultas = await http.get(`paciente/${pacienteId}/consultas`)
+      console.log('teste');
+      const pacienteId = Number(localStorage.getItem('pacienteId'));
 
-        console.log(consultas.data)
-        commit('setPaciente', consultas.data.consultas)
-        const resposta = await consultas.data.consultas.consultas
-        console.log(resposta)
-        commit('setConsultas', resposta)
+      try {
+        const consultas = await http.get(`paciente/${pacienteId}/consultas`);
+        console.log(consultas.data.consultas.consultas);
+        commit('setConsultas', consultas.data.consultas.consultas);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     },
     async agendarConsulta({ commit }, novaConsulta) {
@@ -134,15 +199,13 @@ const store = createStore({
         localStorage.setItem('token', resposta.token)
         localStorage.setItem('usuarioId', resposta.usuario.id)
         localStorage.setItem('pacienteId', resposta.usuario.paciente.id)
-        // this.dispatch('listarConsultasPaciente')
+        commit('setMessage', '')
+
       } catch (error) {
         console.error(error)
         commit('setMessage', error.response.data.message)
         console.log(this.state.message)
       }
-
-
-
     },
 
     logout({ commit }) {
@@ -150,17 +213,17 @@ const store = createStore({
       localStorage.removeItem('pacienteId')
       localStorage.removeItem('message')
       localStorage.clear()
-      this.state.message = ''
+      commit('setNotificacoes', []);
+      commit('setMessage', '');
       this.state.consultas = []
+      this.state.paciente = {}
     },
 
-    init({ commit }) {
+    init({ commit, dispatch }) {
+      dispatch('getPaciente')
+      dispatch('listarConsultasPaciente')
+      dispatch('listarNotificacoes')
 
-      localStorage.removeItem('token')
-      localStorage.removeItem('pacienteId')
-      localStorage.removeItem('message')
-      this.state.message = ''
-      this.state.consultas = []
     }
   }
 })
