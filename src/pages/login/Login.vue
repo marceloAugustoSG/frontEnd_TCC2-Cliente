@@ -1,49 +1,39 @@
 <template>
-  <v-app>
+  <div class="d-flex align-center justify-center" style="height: 100vh">
     <v-dialog v-model="alertMessage" max-width="500">
       <v-card>
         <Alert type="error" title="Aviso" variant="outlined" text="email ou senha incorretos" />
       </v-card>
     </v-dialog>
-    <v-container class="fill-height">
-      <v-row class="p-4">
-        <v-col cols="12" lg="3" md="2" sm="2" xl="4" />
-        <v-col cols="12" lg="6" md="8" sm="8" xl="4">
-          <v-card>
-            <v-card-text>
-              <h2 class="text-center">Login</h2>
-            </v-card-text>
-            <v-card>
-              <v-card-item>
-                <form @submit.prevent="submit">
-                  <v-text-field prepend-inner-icon="mdi-email" v-model="usuario.email" :rules="emailRules" label="E-mail"
-                    required />
-                  <v-text-field prepend-inner-icon="mdi-form-textbox-password" v-model="usuario.password"
-                    :append-inner-icon="showpassword ? 'mdi-eye' : 'mdi-eye-off'
-                      " :type="showpassword ? 'text' : 'password'" @click:append-inner="showpassword = !showpassword"
-                    label="Senha" required />
-                  <v-row class="pb-5">
-                    <v-col>
-                      <v-btn prepend-icon="mdi-account-plus" to="/criarConta" color="secundary" class="w-100">Criar
-                        Conta</v-btn>
-                    </v-col>
-                    <v-col>
-                      <v-btn type="submit" class="w-100" prepend-icon="mdi-login" color="primary">Entrar</v-btn>
-                    </v-col>
-                  </v-row>
-                </form>
-              </v-card-item>
-            </v-card>
-          </v-card>
-          <v-col cols="12" lg="3" md="2" sm="2" xl="4" />
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-app>
+    <v-col>
+
+      <v-sheet  max-width="400" class="mx-auto pa-3" border rounded >
+
+        <h2 class="text-center text-subtitle-1">Login</h2>
+        <form @submit.prevent="submit">
+          <v-text-field prepend-inner-icon="mdi-email" variant="outlined" v-model="usuario.email" :rules="emailRules"
+            label="E-mail" required />
+          <v-text-field prepend-inner-icon="mdi-form-textbox-password" variant="outlined" v-model="usuario.password"
+            :append-inner-icon="showpassword ? 'mdi-eye' : 'mdi-eye-off'
+              " :type="showpassword ? 'text' : 'password'" @click:append-inner="showpassword = !showpassword"
+            label="Senha" required />
+          <v-row class="pb-5">
+            <v-col>
+              <v-btn prepend-icon="mdi-account-plus" to="/criarConta" text="Criar
+                  Conta" color="secundary" variant="tonal" class="w-100" />
+            </v-col>
+            <v-col>
+              <v-btn type="submit" class="w-100" text="Entrar" prepend-icon="mdi-login" color="primary" />
+            </v-col>
+          </v-row>
+        </form>
+      </v-sheet>
+    </v-col>
+  </div>
 </template>
 
 <script setup>
-import { ref, reactive, onBeforeMount } from "vue";
+import { ref, reactive } from "vue";
 import { useStore } from "vuex"
 import { useRouter } from "vue-router";
 import Alert from "@/components/mensagens/Alert.vue";
@@ -64,7 +54,7 @@ const emailRules = ref([
 
 
 async function submit() {
-  
+
   await store.dispatch('logar', usuario).then(() => {
     const message = store.state.message
     message ? alertMessage.value = true : alertMessage.value = false
@@ -73,19 +63,11 @@ async function submit() {
     console.log(e)
   })
 }
+// async function submit() {
 
-onBeforeMount(() => {
-  try {
-    store.dispatch('init')
+//   await store.dispatch('logar', usuario)
 
-  } catch (error) {
-    console.error(error)
-
-  }
-
-})
-
-
+// }
 </script>
 
 <style>

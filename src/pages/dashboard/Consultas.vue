@@ -1,10 +1,10 @@
 <template>
   <div class="aviso" v-if="consultas.length === 0">
-    <p style="text-align: center;">Nenhuma consulta agendada no momento</p>
+    <p style="text-align: center;">Nenhuma consulta solicitada no momento</p>
   </div>
   <v-row v-else-if="consultas && consultas.length > 0">
     <v-col cols="12" sm="6" md="4" lg="4" v-for="consulta in consultas" :key="consulta.id">
-      <v-card>
+      <v-sheet variant="outlined" border elevation="8" rounded>
         <v-toolbar>
           <v-toolbar-title>{{ consulta.servico }}</v-toolbar-title>
           <v-toolbar-items>
@@ -13,7 +13,7 @@
         <v-divider />
         <v-card-item title="Status:">
           <v-card-subtitle
-            :class="consulta.status === 'Solicitada' ? 'text-orange' : consulta.status === 'Confirmada' ? 'text-green' : consulta.status">{{
+            :class="consulta.status === 'Cancelada' ? 'text-red' : consulta.status === 'Solicitada' ? 'text-orange' : consulta.status === 'Confirmada' ? 'text-green' : consulta.status">{{
               consulta.status
             }}</v-card-subtitle>
         </v-card-item>
@@ -22,12 +22,10 @@
         <v-divider />
         <v-card-item title="Solicitada em:" :subtitle="formatDate(consulta.data_solicitacao)" />
         <v-divider />
-        <v-card-item v-show="consulta.status === 'Confirmada' && consulta.data !== null" title="Data:"
-          :subtitle="!consulta.data ? 'Ainda não definida' : formatDate(consulta.data)" />
+        <v-card-item title="Data:" :subtitle="!consulta.data ? 'Ainda não definida' : formatDate(consulta.data)" />
         <v-divider />
-        <v-card-item v-show="consulta.status === 'Confirmada' && consulta.data !== null" title="Local:"
-          subtitle="Castelinho" />
-      </v-card>
+        <v-card-item title="Local:" subtitle="Castelinho" />
+      </v-sheet>
     </v-col>
   </v-row>
 </template>
@@ -54,3 +52,9 @@ onBeforeMount(async () => {
 });
 
 </script>
+
+<style scoped>
+.text-red-5 {
+  color: red
+}
+</style>

@@ -5,15 +5,26 @@ const routes =
       path: "/",
       redirect: "login",
     },
-
     {
       path: "/login",
       name: "login",
+      beforeEnter: (to, from, next) => {
+        const autenticado = localStorage.getItem('token');
+        if (autenticado) {
+          // Se já estiver autenticado, redirecione para o dashboard
+          next('/dashboard');
+        } else {
+          // Caso contrário, continue com a navegação normal
+          next();
+        }
+
+      },
+
       component: () => import("@/pages/login/Login"),
     },
     {
       path: "/criarConta",
-      component: () => import("@/pages/CreateAccountPage.vue"),
+      component: () => import("@/pages/criarConta.vue"),
     },
     {
       path: "/logout",

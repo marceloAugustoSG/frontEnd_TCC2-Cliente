@@ -1,59 +1,46 @@
 <template>
     <v-container class="fill-height">
-        <v-row class=" p-4">
-            <v-col cols="12" lg="3" md="2" sm="2" xl="4"></v-col>
-            <v-col cols="12" lg="6" md="8" sm="8" xl="4">
-                <v-card elevation="10">
-                    <v-card-text>
-                        <h2 class="text-center">Crie sua conta</h2>
-                    </v-card-text>
-                    <v-card>
-                        <v-card-item>
-                            <form @submit.prevent="submit">
-
-                                <v-text-field prepend-inner-icon="mdi-account" v-model="nome" label="Nome" required />
-                                <v-text-field prepend-inner-icon="mdi-email" v-model="email" :rules="emailRules"
-                                    label="E-mail" required />
-
-                                <v-text-field prepend-inner-icon="mdi-form-textbox-password" v-model="password"
-                                    :append-inner-icon="showpassword ? 'mdi-eye' : 'mdi-eye-off'"
-                                    :type="showpassword ? 'text' : 'password'"
-                                    @click:append-inner="showpassword = !showpassword" label="Senha" :rules="passwordRules"
-                                    required />
 
 
-                                <v-text-field prepend-inner-icon="mdi-form-textbox-password" v-model="confirmPassword"
-                                    :append-inner-icon="showCorfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                                    :type="showCorfirmPassword ? 'text' : 'password'"
-                                    @click:append-inner="showCorfirmPassword = !showCorfirmPassword" label="Confirmar Senha"
-                                    :rules="passwordRules" required />
-                                <v-text-field type="number" v-model="matricula" label="Nº Matricula" :rules="matriculaRules"
-                                    required />
-                                <v-select label="Vinculo com a UFES" v-model="tipo" :items="selectTipos" required />
-                                <!-- <v-select v-model="nivel" :items="['Graduação', 'Pós-graduação']"
-                                    label="Você é estudante de" required /> -->
-                                <!-- <v-select v-model="curso" :items="cursos" label="Curso" required /> -->
-                                <v-text-field v-model="curso" :items="cursos" label="Telefone" required />
-                                <v-text-field type="date" v-model="data" label="Data de Nascimento" required />
+        <v-sheet max-width="400" class="mx-auto pa-3" border rounded :elevation="8">
+            <h2 class="text-center text-subtitle-1 mb-5">Criar conta</h2>
+            <form @submit.prevent="submit">
 
-                                <v-row class="pb-5">
-                                    <v-col>
-                                        <v-btn @click="backtoLogin" class="w-100" color="primary">Voltar para o
-                                            Login</v-btn>
-                                    </v-col>
+                <v-text-field prepend-inner-icon="mdi-account" variant="outlined" v-model="nome" label="Nome" required />
+                <v-text-field prepend-inner-icon="mdi-email" v-model="email" variant="outlined" :rules="emailRules"
+                    label="E-mail" required />
 
-                                    <v-col>
-                                        <v-btn type="submit" class="w-100" color="create">Criar
-                                            Conta</v-btn>
-                                    </v-col>
-                                </v-row>
-                            </form>
-                        </v-card-item>
-                    </v-card>
-                </v-card>
-                <v-col cols="12" lg="3" md="2" sm="2" xl="4" />
-            </v-col>
-        </v-row>
+                <v-text-field prepend-inner-icon="mdi-form-textbox-password" variant="outlined" v-model="password"
+                    :append-inner-icon="showpassword ? 'mdi-eye' : 'mdi-eye-off'" :type="showpassword ? 'text' : 'password'"
+                    @click:append-inner="showpassword = !showpassword" label="Senha" :rules="passwordRules" required />
+
+
+                <v-text-field prepend-inner-icon="mdi-form-textbox-password" variant="outlined" v-model="confirmPassword"
+                    :append-inner-icon="showCorfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                    :type="showCorfirmPassword ? 'text' : 'password'"
+                    @click:append-inner="showCorfirmPassword = !showCorfirmPassword" label="Confirmar Senha"
+                    :rules="passwordRules" required />
+                <v-text-field type="number" v-model="matricula" label="Nº Matricula" variant="outlined"
+                    :rules="matriculaRules" required />
+                <v-select label="Vinculo com a UFES" v-model="tipo" variant="outlined" :items="selectTipos" required />
+
+                <v-text-field v-model="telefone" label="Telefone" variant="outlined" required />
+                <v-text-field type="date" v-model="data" label="Data de Nascimento" variant="outlined" required />
+
+
+                <v-row class="pb-5">
+                    <v-col>
+                        <v-btn @click="backtoLogin" class="w-100" color="primary">Voltar para o
+                            Login</v-btn>
+                    </v-col>
+
+                    <v-col>
+                        <v-btn type="submit" class="w-100" variant="outlined" color="create">Criar
+                            Conta</v-btn>
+                    </v-col>
+                </v-row>
+            </form>
+        </v-sheet>
 
         <v-dialog v-model="isUserCreated" max-width="500">
             <v-card>
@@ -102,6 +89,7 @@ let password = ref('')
 let matricula = ref('')
 let tipo = ref('')
 let data = ref('')
+let telefone = ref('')
 let curso = ref('')
 let nivel = ref('')
 
@@ -126,20 +114,20 @@ async function submit() {
             tipo: tipo.value,
             matricula: matricula.value,
             dataNascimento: dataFormatada.value,
-            curso: curso.value
+            curso: curso.value,
+            telefone: telefone.value
         }
     }
 
     try {
         await store.dispatch('criarUsuario', novoPaciente)
-
-
         if (store.state.message === "usuario criado com sucesso!") {
             isUserCreated.value = true
             setInterval(() => {
                 isUserCreated.value = false
+                backtoLogin()
             }, 2500)
-            clearInputs()
+            // clearInputs()
 
         }
         if (store.state.message === 'email não aceito') {
@@ -192,18 +180,6 @@ const dataFormatada = reactive(computed(() => {
     const ano = dataF.getFullYear();
     return `${ano}-${mes}-${dia}T00:00:00.000Z`;
 }))
-
-// const dataFormatada = reactive(computed(() => {
-//     const dataF = new Date(data.value);
-//     const dia = String(dataF.getDate()).padStart(2, "0");
-//     const mes = String(dataF.getMonth() + 1).padStart(2, "0");
-//     const ano = dataF.getFullYear();
-//     const horaFormat = hora.value.hours <= 9 ? `0${hora.value.hours}` : hora.value.hours
-//     const minutesFormat = hora.value.minutes <= 9 ? `0${hora.value.minutes}` : hora.value.minutes
-//     return `${ano}-${mes}-${dia}T${horaFormat}:${minutesFormat}:00.000Z`;
-// }))
-
-
 
 const emailRules = ref([
     v => !!v || 'E-mail é obrigatório e unico',

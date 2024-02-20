@@ -1,17 +1,17 @@
 <template>
-  <v-container class="pa-1">
-    <v-card class="pa-5" elevation="10">
+  <v-container>
+    <v-sheet class="pa-5" border rounded>
       <form @submit.prevent="submit">
         <v-row>
-          <p>{{ store.state.paciente.id }}</p>
+          <!-- <p>{{ store.state.paciente.id }}</p> -->
           <v-col cols="12">
-            <v-text-field label="Seu nome" v-model="store.state.paciente.nome" disabled />
+            <v-text-field label="Seu nome" variant="outlined" v-model="store.state.paciente.nome" disabled />
           </v-col>
           <v-col cols="12">
-            <v-text-field label="Matricula" v-model="store.state.paciente.matricula" disabled />
+            <v-text-field label="Matricula"  variant="outlined" v-model="store.state.paciente.matricula" disabled />
           </v-col>
           <v-col cols="12" md="12">
-            <v-select v-model="servico" label="Serviço" :items="[
+            <v-select v-model="servico"  variant="outlined" label="Serviço" :items="[
               'Atendimento Médico',
               'Atendimento Psicológico',
             ]" required />
@@ -21,13 +21,13 @@
             <teste />
           </v-col>
           <v-col v-else cols="12" md="12">
-            <v-textarea label="Observações" v-model="observacao" />
+            <v-textarea label="Observações" variant="outlined" v-model="observacao" clearable />
           </v-col>
         </v-row>
         <v-btn type="submit" :loading="loading" block color="primary" :append-icon="showIcon ? 'mdi-check-circle' : ''"
           text="Solicitar Consulta" />
       </form>
-    </v-card>
+    </v-sheet>
     <v-dialog v-model="store.state.isMessageSucesso">
       <mensagemSucesso :mensagem="msg" />
     </v-dialog>

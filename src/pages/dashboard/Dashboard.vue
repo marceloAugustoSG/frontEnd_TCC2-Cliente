@@ -89,9 +89,17 @@ function toggleTheme() {
     : "dark";
 }
 
+
+
 onBeforeMount(() => {
-  store.dispatch('init')
-  store.dispatch('clearMessage')
+  try {
+    store.dispatch('init')
+    store.dispatch('clearMessage')
+
+  } catch (error) {
+    console.error(error)
+
+  }
 
 })
 </script>

@@ -1,31 +1,92 @@
 <template>
   <v-container>
+    <v-row align="center">
 
-    <v-row class="cabecalho">
-      <v-col cols="12">
-        <h2>Meu Perfil</h2>
+      <v-col>
+        <v-sheet variant="outlined" class="pa-5 " border rounded=""> 
+          <div class="d-flex  align-center justify-space-between mb-5">
+            <h2>Meu Perfil</h2>
+            <v-btn icon="mdi-pencil" @click="habilitarCampos" variant="tonal" />
+          </div>
+          <v-spacer></v-spacer>
+          <form @submit.prevent="submit">
+            <v-text-field prepend-inner-icon="mdi-account" variant="outlined" v-model="store.state.paciente.nome" label="Nome" required
+              :disabled="editCampos" />
+            <v-text-field type="number" v-model="store.state.paciente.matricula" variant="outlined" label="Nº Matricula" required
+              :disabled="editCampos" />
+            <v-text-field v-model="store.state.paciente.telefone" label="Telefone"  variant="outlined" required :disabled="editCampos" />
+            <v-select label="Vinculo com a UFES" v-model="store.state.paciente.tipo" variant="outlined" :items="selectTipos" required
+              :disabled="editCampos" />
+            <v-row class="pb-5">
+              <v-col>
+                <v-btn type="submit" class="w-100" color="primary" text="Atualizar" :disabled="editCampos" />
+              </v-col>
+            </v-row>
+          </form>
+
+        </v-sheet>
+        <!-- <div class="rounded-lg bordered-div"> -->
+
+
+        <!-- </div> -->
       </v-col>
     </v-row>
-    <v-spacer></v-spacer>
-    <v-row>
-      <v-col cols="12" sm="12">
-        <form @submit.prevent="atualizarPerfil">
-          <v-text-field label="Nome" />
-          <v-text-field label="Nome" />
-          <v-btn text="Atualizar" class="w-100" />
-        </form>
-      </v-col>
-    </v-row>
-
   </v-container>
-</template>
 
-<script>
-export default {};
+  <v-dialog v-model="isPerfilAtualizado" max-width="500">
+    <v-card>
+      <Alert type="success" title="Aviso" text="Perfil atualizado !" variant="outlined" />
+    </v-card>
+  </v-dialog>
+
+  <v-dialog v-model="perfilErro" max-width="500">
+    <v-card>
+      <Alert type="warning" title="Aviso" text="Erro ao atualizar o perfil" variant="outlined" />
+    </v-card>
+  </v-dialog>
+</template>
+<script setup>
+import { ref } from "vue"
+import { useStore } from "vuex"
+import Alert from "@/components/mensagens/Alert.vue";
+const store = useStore();
+
+let isPerfilAtualizado = ref(false)
+let perfilErro = ref(false)
+let editCampos = ref(true)
+const selectTipos = ref(['Aluno', 'Docente', 'Técnico Administrativo'])
+
+function habilitarCampos() {
+  editCampos.value = !editCampos.value
+}
+
+async function submit() {
+
+  const novoPaciente = {
+    nome: store.state.paciente.nome,
+    tipo: store.state.paciente.tipo,
+    telefone: store.state.paciente.telefone,
+    matricula: store.state.paciente.matricula,
+  }
+  console.log(novoPaciente)
+
+  try {
+    await store.dispatch('editarPerfil', novoPaciente).then(() => {
+      isPerfilAtualizado.value = true
+
+    })
+  } catch (error) {
+    perfilErro.value = true
+
+  }
+}
 </script>
 
 <style>
-.cabecalho {
-  text-align: center;
+.bordered-div {
+  border: 1px solid rgba(194, 194, 194, 0.336);
+  /* Adiciona uma borda branca de 1 pixel */
+  padding: 10px;
+  /* Adiciona um espaçamento interno de 10 pixels (ajuste conforme necessário) */
 }
 </style>
