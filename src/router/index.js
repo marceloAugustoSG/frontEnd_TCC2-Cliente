@@ -50,15 +50,15 @@ const routes =
           component: () => import("@/pages/dashboard/Inicio.vue"),
         },
 
-        {
-          path: "/teste",
-          component: () => import("@/components/DashBoard/FormStepper.vue"),
-        },
+        // {
+        //   path: "/teste",
+        //   component: () => import("@/components/DashBoard/FormStepper.vue"),
+        // },
 
-        {
-          path: "/teste10",
-          component: () => import("@/components/teste10.vue"),
-        },
+        // {
+        //   path: "/teste10",
+        //   component: () => import("@/components/teste10.vue"),
+        // },
 
         {
           path: "/consultas",
