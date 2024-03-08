@@ -9,13 +9,13 @@
             <v-card-actions>
                 <v-spacer />
                 <v-btn @click="fecharDialog" text="OK" />
-
             </v-card-actions>
         </v-card>
     </v-dialog>
 </template>
 
 <script setup>
+import store from '@/store';
 import { ref, defineProps } from 'vue';
 
 const props = defineProps({
@@ -27,6 +27,8 @@ const showDialog = ref(props.tipo === 'Atendimento Psicológico');
 function fecharDialog() {
     // Modificando a variável reativa em vez da propriedade
     showDialog.value = false;
+    store.dispatch('setShowBtnSolicitarConsulta', false)
+    console.log(store.state.showBtnSolicitarConsulta);
 }
 console.log(showDialog.value);
 </script>

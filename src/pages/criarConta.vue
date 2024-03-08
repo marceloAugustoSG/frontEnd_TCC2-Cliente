@@ -1,7 +1,5 @@
 <template>
     <v-container class="fill-height">
-
-
         <v-sheet max-width="400" class="mx-auto pa-3" border rounded :elevation="8">
             <h2 class="text-center text-subtitle-1 mb-5">Criar conta</h2>
             <form @submit.prevent="submit">
@@ -41,7 +39,6 @@
                 </v-row>
             </form>
         </v-sheet>
-
         <v-dialog v-model="isUserCreated" max-width="500">
             <v-card>
                 <Alert type="success" title="Aviso" text="Usuário criado com sucesso" variant="outlined" />
@@ -81,7 +78,6 @@ let isUserExist = ref(false)
 let confirmPassword = ref('')
 let showpassword = ref(false)
 let showCorfirmPassword = ref(false)
-let showDialog = ref(false)
 
 let nome = ref('')
 let email = ref('')
@@ -91,7 +87,6 @@ let tipo = ref('')
 let data = ref('')
 let telefone = ref('')
 let curso = ref('')
-let nivel = ref('')
 
 
 const cursos = ['Agronomia', 'Engenharia de Alimentos', 'Engenharia Florestal', 'Engenharia Industrial Madeireira', 'Engenharia Química', 'Medicina Veterinária',
@@ -103,8 +98,11 @@ const cursos = ['Agronomia', 'Engenharia de Alimentos', 'Engenharia Florestal', 
 
 const selectTipos = ref(['Aluno', 'Docente', 'Técnico Administrativo'])
 
-async function submit() {
 
+async function submit() {
+    console.log('começo da função')
+    console.log('isCreate ' + isUserCreated.value)
+    console.log('isUserExist ' + isUserExist.value)
     const novoPaciente = {
         email: email.value,
         password: password.value,
@@ -118,43 +116,23 @@ async function submit() {
             telefone: telefone.value
         }
     }
-
-    try {
+    if (!checkPassoWord()) {
+        differentPass.value = true
+        return;
+    } else {
         await store.dispatch('criarUsuario', novoPaciente)
-        if (store.state.message === "usuario criado com sucesso!") {
-            isUserCreated.value = true
-            setInterval(() => {
-                isUserCreated.value = false
-                backtoLogin()
-            }, 2500)
-            // clearInputs()
-
-        }
-        if (store.state.message === 'email não aceito') {
-            isCheckEmail.value = true
-            setInterval(() => {
-                isCheckEmail.value = false
-            }, 2500)
-            clearInputs()
-        }
-        if (store.state.message === 'usuário ja existe') {
+        if (store.state.createError) {
             isUserExist.value = true
-            setInterval(() => {
-                isUserExist.value = false
-            }, 2500)
-            clearInputs()
+            console.log('error : ' + store.state.createError)
+            console.log('erro ao criar o paciente')
+        } if (store.state.createSucces) {
+            isUserCreated.value = true
+            console.log('sucesso : ' + store.state.createSucces)
         }
-
-        if (!checkPassoWord()) {
-            differentPass.value = true
-            setInterval(() => {
-                differentPass.value = false
-            }, 2500)
-        }
-    } catch (error) {
-        console.log(error)
     }
 }
+
+
 function backtoLogin() {
     router.push({ name: 'login' })
 }
@@ -178,7 +156,7 @@ const dataFormatada = reactive(computed(() => {
     const dia = String(dataF.getDate() + 1).padStart(2, "0");
     const mes = String(dataF.getMonth() + 1).padStart(2, "0");
     const ano = dataF.getFullYear();
-    return `${ano}-${mes}-${dia}T00:00:00.000Z`;
+    return new Date(`${ano}-${mes}-${dia}T00:00:00.000Z`);
 }))
 
 const emailRules = ref([

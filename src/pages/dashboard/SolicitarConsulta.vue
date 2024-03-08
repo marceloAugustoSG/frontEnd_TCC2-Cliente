@@ -3,18 +3,17 @@
     <v-sheet class="pa-5" border rounded>
       <form @submit.prevent="submit">
         <v-row>
-          <!-- <p>{{ store.state.paciente.id }}</p> -->
           <v-col cols="12">
             <v-text-field label="Seu nome" variant="outlined" v-model="store.state.paciente.nome" disabled />
           </v-col>
           <v-col cols="12">
-            <v-text-field label="Matricula"  variant="outlined" v-model="store.state.paciente.matricula" disabled />
+            <v-text-field label="Matricula" variant="outlined" v-model="store.state.paciente.matricula" disabled />
           </v-col>
           <v-col cols="12" md="12">
-            <v-select v-model="servico"  variant="outlined" label="Serviço" :items="[
-              'Atendimento Médico',
-              'Atendimento Psicológico',
-            ]" required />
+            <v-select v-model="servico" variant="outlined" onchange="changeSelect" label="Serviço" :items="[
+        'Atendimento Médico',
+        'Atendimento Psicológico',
+      ]" required />
           </v-col>
           <v-col v-if="servico === 'Atendimento Psicológico'">
             <dialogMensagem :tipo="servico" />
@@ -24,8 +23,8 @@
             <v-textarea label="Observações" variant="outlined" v-model="observacao" clearable />
           </v-col>
         </v-row>
-        <v-btn type="submit" :loading="loading" block color="primary" :append-icon="showIcon ? 'mdi-check-circle' : ''"
-          text="Solicitar Consulta" />
+        <v-btn :class="store.state.showBtnSolicitarConsulta ? '' : 'showBtn'" type="submit" :loading="loading" block
+          color="primary" :append-icon="showIcon ? 'mdi-check-circle' : ''" text="Solicitar Consulta" />
       </form>
     </v-sheet>
     <v-dialog v-model="store.state.isMessageSucesso">
@@ -51,6 +50,16 @@ const servico = ref('')
 const observacao = ref('')
 const msg = ref('Consulta solicitada com sucesso!')
 
+function changeSelect() {
+  if (servico.value === 'Atendimento Médico') {
+    console.log('Opção selecionada: Atendimento Médico');
+    alert('alosadfsd')
+    // Coloque aqui o código que deseja executar quando a opção mudar para "Atendimento Médico"
+  } else {
+    console.log('Opção selecionada: Outro serviço');
+    // Coloque aqui o código que deseja executar quando a opção mudar para outro serviço
+  }
+}
 function clearCamposConsulta() {
   servico.value = ''
   observacao.value = ''
@@ -93,6 +102,8 @@ async function submit() {
 onBeforeMount(async () => {
   try {
     await store.dispatch('getPaciente')
+    store.dispatch('setShowBtnSolicitarConsulta', true)
+
   } catch (error) {
     console.error(error)
   }
@@ -101,4 +112,8 @@ onBeforeMount(async () => {
 </script>
 
 
-<style scoped></style>
+<style scoped>
+.showBtn {
+  display: none;
+}
+</style>

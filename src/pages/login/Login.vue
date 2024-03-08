@@ -2,12 +2,12 @@
   <div class="d-flex align-center justify-center" style="height: 100vh">
     <v-dialog v-model="alertMessage" max-width="500">
       <v-card>
-        <Alert type="error" title="Aviso" variant="outlined" text="email ou senha incorretos" />
+        <Alert type="warning" density="compact" title="Aviso" variant="outlined" text="email ou senha incorretos" />
       </v-card>
     </v-dialog>
     <v-col>
 
-      <v-sheet  max-width="400" class="mx-auto pa-3" border rounded >
+      <v-sheet max-width="400" class="mx-auto pa-3" border rounded>
 
         <h2 class="text-center text-subtitle-1">Login</h2>
         <form @submit.prevent="submit">

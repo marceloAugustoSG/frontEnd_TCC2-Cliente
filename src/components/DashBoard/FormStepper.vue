@@ -62,6 +62,7 @@
             </form>
 
         </template>
+
         <template v-slot:item.3>
             <dialogConsentimeento />
             <form @submit.prevent="avancarEtapa">
@@ -106,7 +107,8 @@
                     <v-label text="SEMPRE" />
                 </v-radio-group>
                 <v-divider />
-                <p class="mt-3 mb-3">5. O problema atinge e/ou está presente em mais de uma área da minha vida (ex: família,
+                <p class="mt-3 mb-3">5. O problema atinge e/ou está presente em mais de uma área da minha vida (ex:
+                    família,
                     relações
                     interpessoais, vida social, vida acadêmica...)</p>
                 <v-radio-group v-model="respostasC.problema5" required>
@@ -128,7 +130,8 @@
                     <v-label text="SEMPRE" />
                 </v-radio-group>
                 <v-divider />
-                <p class="mt-3 mb-3">7. Me sinto motivado para realizar o que for necessário para resolver o problema.</p>
+                <p class="mt-3 mb-3">7. Me sinto motivado para realizar o que for necessário para resolver o problema.
+                </p>
                 <v-radio-group v-model="respostasC.problema7" required>
                     <v-label text="NUNCA" />
                     <v-radio label="1" value="1" required />
@@ -138,7 +141,8 @@
                     <v-label text="SEMPRE" />
                 </v-radio-group>
                 <v-divider />
-                <p class="mt-3 mb-3">8. O problema está atingindo várias das minhas atividades diárias: sono, alimentação,
+                <p class="mt-3 mb-3">8. O problema está atingindo várias das minhas atividades diárias: sono,
+                    alimentação,
                     estudo, lazer,
                     trabalho e convívio com amigos, por exemplo</p>
                 <v-radio-group v-model="respostasC.problema8" required>
@@ -150,7 +154,8 @@
                     <v-label text="SEMPRE" />
                 </v-radio-group>
                 <v-divider />
-                <p class="mt-3 mb-3">9. Na psicoterapia eu focaria na resolução de meus problemas diários (estudo, trabalho,
+                <p class="mt-3 mb-3">9. Na psicoterapia eu focaria na resolução de meus problemas diários (estudo,
+                    trabalho,
                     dinheiro e
                     relacionamentos) mais do que no autoconhecimento</p>
                 <v-radio-group v-model="respostasC.problema9" required>
@@ -180,6 +185,7 @@
                 </v-card-actions>
             </form>
         </template>
+
         <template v-slot:item.4>
             <form @submit.prevent="submit">
                 <p>11. O problema atinge várias de minhas tarefas cotidianas (comer, dormir, trabalhar, estudar,
@@ -193,7 +199,8 @@
                     <v-label text="SEMPRE" />
                 </v-radio-group>
                 <v-divider />
-                <p class="mt-3 mb-3">12. A intervenção indicada para o problema será uma das prioridades em minha vida.</p>
+                <p class="mt-3 mb-3">12. A intervenção indicada para o problema será uma das prioridades em minha vida.
+                </p>
                 <v-radio-group v-model="respostasC.problema12" required>
                     <v-label text="NUNCA" />
                     <v-radio label="1" value="1" />
@@ -213,7 +220,8 @@
                     <v-label text="SEMPRE" />
                 </v-radio-group>
                 <v-divider />
-                <p class="mt-3 mb-3">14. Geralmente tenho o hábito de refletir sobre os conselhos e orientações que recebo.
+                <p class="mt-3 mb-3">14. Geralmente tenho o hábito de refletir sobre os conselhos e orientações que
+                    recebo.
                 </p>
                 <v-radio-group v-model="respostasC.problema14" required>
                     <v-label text="NUNCA" />
@@ -244,7 +252,8 @@
                     <v-label text="SEMPRE" />
                 </v-radio-group>
                 <v-divider />
-                <p class="mt-3 mb-3">17. Quando tenho problemas, costumo 'me fechar' e tentar resolvê-los sozinho(a).</p>
+                <p class="mt-3 mb-3">17. Quando tenho problemas, costumo 'me fechar' e tentar resolvê-los sozinho(a).
+                </p>
                 <v-radio-group v-model="respostasC.problema17" required>
                     <v-label text="NUNCA" />
                     <v-radio label="1" value="1" />
@@ -287,15 +296,13 @@
                 <v-card-actions>
                     <v-btn text="Anterior" @click="voltarEtapa" variant="outlined" />
                     <v-spacer />
-                    <v-btn @click="enviarRespostas" text="Enviar respostas" variant="outlined" />
+                    <v-btn @click="enviarRespostas" text="Finalizar" variant="outlined" />
                 </v-card-actions>
             </form>
 
         </template>
-
     </v-stepper>
-</template>  
-
+</template>
 
 <script setup>
 import { ref, computed } from "vue"
@@ -349,6 +356,7 @@ let etapas = computed(() => {
 
 function avancarEtapa() {
     if (step.value === 3) {
+
     }
     if (step.value > 5) {
         step.value = 4
@@ -407,6 +415,7 @@ function enviarRespostas() {
     }
     showStepper.value = false
     console.log(showStepper.value)
+    store.dispatch('setShowBtnSolicitarConsulta', true)
 }
 
 
@@ -415,5 +424,3 @@ function enviarRespostas() {
 </script>
 
 <style></style>
-
-

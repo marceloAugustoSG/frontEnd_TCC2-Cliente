@@ -22,7 +22,7 @@
         <v-divider />
         <v-card-item title="Solicitada em:" :subtitle="formatDate(consulta.data_solicitacao)" />
         <v-divider />
-        <v-card-item title="Data:" :subtitle="!consulta.data ? 'Ainda não definida' : formatDate(consulta.data)" />
+        <v-card-item title="Data:" :subtitle="!consulta.data ? 'Data ainda não definida' : formatDate(consulta.data)" />
         <v-divider />
         <v-card-item title="Local:" subtitle="Castelinho" />
       </v-sheet>

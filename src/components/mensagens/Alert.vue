@@ -1,8 +1,5 @@
 <template>
-    <div>
-        <v-alert density="compact" :type="props.type" :title="props.title" :text="props.text"
-            :variant="props.variant"></v-alert>
-    </div>
+    <v-alert :density="props.density" :type="props.type" :title="props.title" :text="props.text" :variant="props.variant" />
 </template>
   
 <script setup>

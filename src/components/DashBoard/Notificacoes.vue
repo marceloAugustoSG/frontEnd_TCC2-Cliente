@@ -6,16 +6,13 @@
                     <p>Nenhuma notificação</p>
                 </v-list-item-title>
             </v-list-item>
-
             <v-list-item v-else v-for="(notificacao, index) in notificacoes" :key="index" :value="index">
-                <v-divider />
-
-                <v-list-item-title class="d-flex align-center justify-space-between" style="white-space: pre-line;">
-                    {{ notificacao.mensagem }}
+                <v-list-item-title class="d-flex align-center justify-space-between ma-2"
+                    style="white-space: pre-line; overflow: hidden; text-overflow: ellipsis;">
+                    {{ notificacao.mensagem.slice(0, 40) + '...' }}
                     <v-btn @click="apagarNotificacao(notificacao.id)">X</v-btn>
                 </v-list-item-title>
                 <v-divider />
-
             </v-list-item>
         </v-list>
     </v-card>

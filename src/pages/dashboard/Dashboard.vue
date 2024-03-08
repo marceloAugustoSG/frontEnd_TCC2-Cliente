@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-layout>
-      <v-app-bar style="position: fixed;">
+      <v-app-bar style="position: fixed; " elevation="1">
         <v-app-bar-nav-icon style="margin: 0 10px ; " variant="text" @click.stop="isOpenSBar = !isOpenSBar" />
         <v-app-bar-title>Agenda Sasas</v-app-bar-title>
 

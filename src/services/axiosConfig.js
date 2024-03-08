@@ -2,8 +2,10 @@ import axios from "axios";
 
 // Crie uma instância do Axios sem um token inicial
 export const http = axios.create({
-  // baseURL: "http://192.168.11.74:3005/"
-  baseURL: "http://10.3.152.107:3005/",
+  // baseURL: "http:// 192.168.8.176:3005/",
+  baseURL:
+    "https://apitcc.vercel.app/",
+  // baseURL: "http://10.3.152.107:3005/",
   // baseURL: "http://localhost:3005/"
 });
 
