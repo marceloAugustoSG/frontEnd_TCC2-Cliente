@@ -1,5 +1,4 @@
 import App from "./App.vue";
-import "@vuepic/vue-datepicker/dist/main.css";
 
 
 // Composables
