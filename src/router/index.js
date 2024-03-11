@@ -1,76 +1,74 @@
 import { createRouter, createWebHistory } from "vue-router";
+
 const routes = [
   {
     path: "/",
-    redirect: "login",
+    redirect: "/login",
   },
   {
     path: "/login",
     name: "login",
+    component: () => import("@/pages/login/Login"),
+    meta: { requiresAuth: false },
     beforeEnter: (to, from, next) => {
-      const autenticado = localStorage.getItem("token");
-      if (autenticado) {
-        // Se já estiver autenticado, redirecione para o dashboard
+      const isAuthenticated = localStorage.getItem("token");
+      if (isAuthenticated) {
         next("/dashboard");
       } else {
-        // Caso contrário, continue com a navegação normal
         next();
       }
     },
-
-    component: () => import("@/pages/login/Login"),
   },
   {
     path: "/criarConta",
+    name: "criarConta",
     component: () => import("@/pages/criarConta.vue"),
+    meta: { requiresAuth: false },
   },
   {
     path: "/logout",
+    name: "logout",
     component: () => import("@/pages/login/Logout"),
+    meta: { requiresAuth: true },
   },
   {
+    path: "/dashboard",
     name: "dashboard",
-    path: "/dashBoard",
-    beforeEnter: (to, from, next) => {
-      const autenticado = localStorage.getItem("token");
-      if (autenticado) {
-        next();
-      } else {
-        next("login");
-      }
-    },
-
     component: () => import("@/pages/dashboard/Dashboard.vue"),
-
+    meta: { requiresAuth: true },
     children: [
       {
-        path: "/inicio",
-        component: () => import("@/pages/dashboard/Inicio.vue"),
-      },
-
-      {
         path: "/consultas",
+        name: "consultas",
         component: () => import("@/pages/dashboard/Consultas.vue"),
       },
       {
         path: "/agendar",
+        name: "agendar",
         component: () => import("@/pages/dashboard/SolicitarConsulta.vue"),
       },
 
       {
-        path: "/configuracoes",
-        component: () => import("@/components/DashBoard/Configuracoes.vue"),
-      },
-      {
         path: "/perfil",
+        name: "perfil",
         component: () => import("@/components/DashBoard/Perfil.vue"),
       },
     ],
   },
 ];
+
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = localStorage.getItem("token");
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    next("/login");
+  } else {
+    next();
+  }
 });
 
 export default router;

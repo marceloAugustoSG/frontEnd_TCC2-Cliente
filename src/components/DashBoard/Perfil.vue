@@ -1,22 +1,22 @@
 <template>
   <v-container>
     <v-row align="center">
-
       <v-col>
-        <v-sheet variant="outlined" class="pa-5 " border rounded=""> 
+        <v-sheet variant="outlined" class="pa-5 " border rounded="">
           <div class="d-flex  align-center justify-space-between mb-5">
             <h2>Meu Perfil</h2>
             <v-btn icon="mdi-pencil" @click="habilitarCampos" variant="tonal" />
           </div>
           <v-spacer></v-spacer>
           <form @submit.prevent="submit">
-            <v-text-field prepend-inner-icon="mdi-account" variant="outlined" v-model="store.state.paciente.nome" label="Nome" required
+            <v-text-field prepend-inner-icon="mdi-account" variant="outlined" v-model="store.state.paciente.nome"
+              label="Nome" required :disabled="editCampos" />
+            <v-text-field type="number" v-model="store.state.paciente.matricula" variant="outlined" label="Nº Matricula"
+              required :disabled="editCampos" />
+            <v-text-field v-model="store.state.paciente.telefone" label="Telefone" variant="outlined" required
               :disabled="editCampos" />
-            <v-text-field type="number" v-model="store.state.paciente.matricula" variant="outlined" label="Nº Matricula" required
-              :disabled="editCampos" />
-            <v-text-field v-model="store.state.paciente.telefone" label="Telefone"  variant="outlined" required :disabled="editCampos" />
-            <v-select label="Vinculo com a UFES" v-model="store.state.paciente.tipo" variant="outlined" :items="selectTipos" required
-              :disabled="editCampos" />
+            <v-select label="Vinculo com a UFES" v-model="store.state.paciente.tipo" variant="outlined"
+              :items="selectTipos" required :disabled="editCampos" />
             <v-row class="pb-5">
               <v-col>
                 <v-btn type="submit" class="w-100" color="primary" text="Atualizar" :disabled="editCampos" />
