@@ -37,6 +37,7 @@ const routes = [
     component: () => import("@/pages/dashboard/Dashboard.vue"),
     meta: { requiresAuth: true },
     children: [
+    
       {
         path: "/consultas",
         name: "consultas",
@@ -47,7 +48,7 @@ const routes = [
         name: "agendar",
         component: () => import("@/pages/dashboard/SolicitarConsulta.vue"),
       },
-
+     
       {
         path: "/perfil",
         name: "perfil",
