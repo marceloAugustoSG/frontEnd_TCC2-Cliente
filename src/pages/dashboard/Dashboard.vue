@@ -46,7 +46,7 @@
 
           <v-list-group value="users">
             <template #activator="{ props }">
-              <v-list-item v-bind="props" prepend-icon="mdi-view-agenda" title="Minha Agenda">
+              <v-list-item v-bind="props" prepend-icon="mdi-view-agenda" title="Opções">
               </v-list-item>
             </template>
 
