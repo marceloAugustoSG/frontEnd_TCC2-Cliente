@@ -1,11 +1,11 @@
 import axios from "axios";
 
-const apiUrl = process.env.VUE_APP_API_URL;
+// const apiUrl = process.env.VUE_APP_API_URL;
 // Crie uma instância do Axios sem um token inicial
 export const http = axios.create({
   // baseURL: "http:// 192.168.8.176:3005/",
-  // baseURL:"https://apitcc.vercel.app/",
-  baseURL: "http://10.3.152.107:3005/" || apiUrl,
+  baseURL:"https://apitcc.vercel.app/",
+  // baseURL: "http://10.3.152.107:3005/" || apiUrl,
   // baseURL: "http://localhost:3005/"
 });
 
