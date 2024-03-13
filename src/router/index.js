@@ -1,3 +1,4 @@
+import store from "@/store";
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
@@ -37,7 +38,11 @@ const routes = [
     component: () => import("@/pages/dashboard/Dashboard.vue"),
     meta: { requiresAuth: true },
     children: [
-    
+      {
+        path: "/teste",
+        name: "testeWindow",
+        component: () => import("@/components/testes/testeWindow.vue"),
+      },
       {
         path: "/consultas",
         name: "consultas",
@@ -48,7 +53,7 @@ const routes = [
         name: "agendar",
         component: () => import("@/pages/dashboard/SolicitarConsulta.vue"),
       },
-     
+
       {
         path: "/perfil",
         name: "perfil",

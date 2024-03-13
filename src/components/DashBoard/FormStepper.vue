@@ -2,8 +2,6 @@
     <v-stepper v-if="showStepper" hide-actions mobile v-model="step" :items="etapas">
         <template v-slot:item.1>
             <form @submit.prevent="avancarEtapa">
-
-
                 <v-select v-model="estudanteNivel" :items="['Graduação', 'Pós-graduação', 'Nenhum']"
                     label="Você é estudante de" required />
                 <v-select v-model="centro" :items="['CCAE', 'CCENS', 'Nenhum']" label="Seu Centro é o" required />

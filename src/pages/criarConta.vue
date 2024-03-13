@@ -4,17 +4,20 @@
             <h2 class="text-center text-subtitle-1 mb-5">Criar conta</h2>
             <form @submit.prevent="submit">
 
-                <v-text-field prepend-inner-icon="mdi-account" variant="outlined" v-model="nome" label="Nome" required />
+                <v-text-field prepend-inner-icon="mdi-account" variant="outlined" v-model="nome" label="Nome"
+                    required />
+
                 <v-text-field prepend-inner-icon="mdi-email" v-model="email" variant="outlined" :rules="emailRules"
                     label="E-mail" required />
 
                 <v-text-field prepend-inner-icon="mdi-form-textbox-password" variant="outlined" v-model="password"
-                    :append-inner-icon="showpassword ? 'mdi-eye' : 'mdi-eye-off'" :type="showpassword ? 'text' : 'password'"
-                    @click:append-inner="showpassword = !showpassword" label="Senha" :rules="passwordRules" required />
+                    :append-inner-icon="showpassword ? 'mdi-eye' : 'mdi-eye-off'"
+                    :type="showpassword ? 'text' : 'password'" @click:append-inner="showpassword = !showpassword"
+                    label="Senha" :rules="passwordRules" required />
 
 
-                <v-text-field prepend-inner-icon="mdi-form-textbox-password" variant="outlined" v-model="confirmPassword"
-                    :append-inner-icon="showCorfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                <v-text-field prepend-inner-icon="mdi-form-textbox-password" variant="outlined"
+                    v-model="confirmPassword" :append-inner-icon="showCorfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
                     :type="showCorfirmPassword ? 'text' : 'password'"
                     @click:append-inner="showCorfirmPassword = !showCorfirmPassword" label="Confirmar Senha"
                     :rules="passwordRules" required />

@@ -6,6 +6,8 @@ const store = createStore({
     createSucces: false,
     showBtnSolicitarConsulta: true,
 
+    activeBtnRefresh: true,
+
     ativarBtn: Boolean,
     user: {
       email: String,
@@ -28,6 +30,9 @@ const store = createStore({
     mensagemNotificacao: "",
   },
   mutations: {
+    setActiveBtnRefresh(state, payload) {
+      state.activeBtnRefresh = payload;
+    },
     setShowBtnSolicitarConsulta(state, payload) {
       state.showBtnSolicitarConsulta = payload;
     },
@@ -100,6 +105,9 @@ const store = createStore({
   },
 
   actions: {
+    setActiveBtnRefresh({ commit }, value) {
+      commit("setActiveBtnRefresh", value);
+    },
     setShowBtnSolicitarConsulta({ commit }, value) {
       commit("setShowBtnSolicitarConsulta", value);
     },

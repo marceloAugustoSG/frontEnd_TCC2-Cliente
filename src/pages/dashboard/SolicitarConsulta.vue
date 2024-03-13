@@ -107,6 +107,7 @@ onBeforeMount(async () => {
   } catch (error) {
     console.error(error)
   }
+  store.dispatch('setActiveBtnRefresh', true)
 })
 
 </script>

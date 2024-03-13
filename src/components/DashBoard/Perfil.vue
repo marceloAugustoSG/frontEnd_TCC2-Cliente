@@ -25,10 +25,7 @@
           </form>
 
         </v-sheet>
-        <!-- <div class="rounded-lg bordered-div"> -->
-
-
-        <!-- </div> -->
+      
       </v-col>
     </v-row>
   </v-container>
@@ -46,7 +43,7 @@
   </v-dialog>
 </template>
 <script setup>
-import { ref } from "vue"
+import { onBeforeMount, ref } from "vue"
 import { useStore } from "vuex"
 import Alert from "@/components/mensagens/Alert.vue";
 const store = useStore();
@@ -59,6 +56,10 @@ const selectTipos = ref(['Aluno', 'Docente', 'Técnico Administrativo'])
 function habilitarCampos() {
   editCampos.value = !editCampos.value
 }
+
+onBeforeMount(() => {
+  store.dispatch('setActiveBtnRefresh', true)
+})
 
 async function submit() {
 

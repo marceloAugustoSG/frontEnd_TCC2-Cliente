@@ -3,6 +3,9 @@
     <p style="text-align: center;">Nenhuma consulta solicitada no momento</p>
   </div>
   <v-row v-else-if="consultas && consultas.length > 0">
+    <div style=" width: 100%; display: flex; justify-content: end; padding: 0 10px;">
+
+    </div>
     <v-col cols="12" sm="6" md="4" lg="4" v-for="consulta in consultas" :key="consulta.id">
       <v-sheet variant="outlined" border elevation="8" rounded>
         <v-toolbar>
@@ -14,8 +17,8 @@
         <v-card-item title="Status:">
           <v-card-subtitle
             :class="consulta.status === 'Cancelada' ? 'text-red' : consulta.status === 'Solicitada' ? 'text-orange' : consulta.status === 'Confirmada' ? 'text-green' : consulta.status">{{
-              consulta.status
-            }}</v-card-subtitle>
+    consulta.status
+  }}</v-card-subtitle>
         </v-card-item>
         <v-divider />
         <v-card-item title="Observação:" :subtitle="consulta.observacao" />
@@ -47,8 +50,9 @@ onBeforeMount(async () => {
     await store.dispatch('listarConsultasPaciente');
   } catch (error) {
     console.error(error)
-
+    
   }
+  store.dispatch('setActiveBtnRefresh', false)
 });
 
 </script>

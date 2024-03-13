@@ -6,14 +6,16 @@
         <v-app-bar-title>Agenda Sasas</v-app-bar-title>
 
         <template #append>
-          <v-btn class="mr-3" @click="toggleTheme">
-            <v-icon v-if="theme.global.current.value.dark" icon="mdi-white-balance-sunny" color="orange"></v-icon>
-            <v-icon v-else icon="mdi-moon-waning-crescent" color="gray"></v-icon>
+          <v-btn class="mr-3" @click="toggleTheme" rounded="40"
+            :icon="theme.global.current.value.dark ? 'mdi-moon-waning-crescent' : 'mdi-white-balance-sunny'">
+            <v-icon v-if="theme.global.current.value.dark" icon="mdi-white-balance-sunny" color="orange" />
+            <v-icon v-else icon="mdi-moon-waning-crescent" color="blue" />
           </v-btn>
-
+          <v-btn @click="refresh" icon="mdi-refresh" color="red" rounded="40"
+            :disabled="store.state.activeBtnRefresh" />
           <v-btn icon class="mr-3">
             <v-badge dot>
-              <v-icon icon="mdi-bell-outline"></v-icon>
+              <v-icon icon="mdi-bell-outline" />
             </v-badge>
             <v-menu activator="parent">
               <Notificacoes :notificacoes="notificacoes" />
@@ -56,6 +58,9 @@
             <v-list-item to="/agendar" prepend-icon="mdi-calendar-check">
               <v-list-item-title>Solicitar</v-list-item-title>
             </v-list-item>
+            <v-list-item to="/teste" prepend-icon="mdi-calendar-check">
+              <v-list-item-title>teste</v-list-item-title>
+            </v-list-item>
           </v-list-group>
         </v-list>
       </v-navigation-drawer>
@@ -89,9 +94,16 @@ function toggleTheme() {
     : "dark";
 }
 
+const refresh = async () => {
+  await store.dispatch('listarConsultasPaciente');
+}
+
 
 
 onBeforeMount(() => {
+
+
+  
   try {
     store.dispatch('init')
     store.dispatch('clearMessage')
