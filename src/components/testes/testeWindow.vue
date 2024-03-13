@@ -5,7 +5,7 @@
             <v-avatar color="primary" size="24"> {{ step }}</v-avatar>
         </v-card-title>
 
-        <v-window v-model="step">
+        <v-window v-model="step" disabled>
             <v-window-item :value="1">
                 <form @submit.prevent="next">
                     <v-card-item>
@@ -86,9 +86,9 @@
                 <v-divider></v-divider>
 
                 <v-card-actions>
-                  
+
                     <v-spacer></v-spacer>
-                    <v-btn color="green" variant="flat" type="next" text="Criar Conta"/>
+                    <v-btn color="green" variant="flat" type="next" text="Criar Conta" />
                 </v-card-actions>
 
             </v-window-item>
