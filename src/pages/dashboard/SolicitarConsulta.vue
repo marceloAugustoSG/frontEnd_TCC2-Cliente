@@ -42,13 +42,29 @@ import dialogMensagem from './dialogMensagem.vue';
 import mensagemSucesso from '@/components/mensagens/mensagemSucesso.vue';
 
 
+
+
+
 let loading = ref(false)
 let showIcon = ref(false)
 let sucesso = ref(false)
 const store = useStore()
 const servico = ref('')
 const observacao = ref('')
-const msg = ref('Consulta solicitada com sucesso!')
+const msg = ref('Agendamento solicitado com sucesso!')
+
+
+
+function getDataAtual() {
+  let data = new Date();
+  let dia = String(data.getDate()).padStart(2, '0');
+  let mes = String(data.getMonth() + 1).padStart(2, '0');
+  let ano = data.getFullYear();
+  return `${ano}-${mes}-${dia}`;
+}
+
+const min = getDataAtual()
+
 
 function changeSelect() {
   if (servico.value === 'Atendimento Médico') {

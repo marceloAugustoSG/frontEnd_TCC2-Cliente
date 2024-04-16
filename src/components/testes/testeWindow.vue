@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <v-sheet border rounded class="mx-auto" max-width="500">
         <v-card-title class="text-h6 font-weight-regular d-flex justify-space-between">
             <span>{{ currentTitle }}</span>
@@ -151,4 +151,19 @@ const currentTitle = computed(() => {
     }
 })
 
+</script> -->
+
+<template>
+
+    <Alert type="success" title="Aviso" text="Usuário criado com sucesso" variant="" />
+    <Alert type="warning" title="Aviso" text="Usuário criado com sucesso" variant="outlined" />
+    <Alert type="error" title="Aviso" text="Usuário criado com sucesso" variant="outlined" closable />
+
+</template>
+
+<script setup>
+import Alert from '../mensagens/Alert.vue';
+
 </script>
+
+<style></style>

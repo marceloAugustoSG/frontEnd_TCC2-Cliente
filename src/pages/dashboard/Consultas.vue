@@ -37,12 +37,8 @@ import { computed, onBeforeMount } from 'vue';
 import { useStore } from 'vuex';
 import formatDate from '@/services/date';
 const store = useStore()
-
-
-
 const consultas = computed(() => store.state.consultas)
-console.log(consultas.value)
-
+// console.log(consultas.value)
 
 
 onBeforeMount(async () => {

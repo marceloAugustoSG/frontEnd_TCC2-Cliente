@@ -19,13 +19,19 @@
               :items="selectTipos" required :disabled="editCampos" />
             <v-row class="pb-5">
               <v-col>
-                <v-btn type="submit" class="w-100" color="primary" text="Atualizar" :disabled="editCampos" />
+                <v-btn type="submit" class="w-100" color="primary" text="Atualizar" :disabled="editCampos"  />
               </v-col>
             </v-row>
           </form>
-
         </v-sheet>
-      
+        <v-dialog v-model="store.state.variaveistelaPerfil.updateNotModifield">
+          <Alert type="warning" title="Aviso" text="Usuário não foi atualizado"  />
+
+        </v-dialog>
+        <v-dialog v-model="store.state.variaveistelaPerfil.updateModifield">
+          <Alert type="success" title="Aviso" text="Usuário atualizado" />
+
+        </v-dialog>
       </v-col>
     </v-row>
   </v-container>
@@ -65,19 +71,26 @@ async function submit() {
 
   const novoPaciente = {
     nome: store.state.paciente.nome,
-    tipo: store.state.paciente.tipo,
-    telefone: store.state.paciente.telefone,
     matricula: store.state.paciente.matricula,
+    telefone: store.state.paciente.telefone,
+    tipo: store.state.paciente.tipo,
   }
   console.log(novoPaciente)
 
-  try {
-    await store.dispatch('editarPerfil', novoPaciente).then(() => {
-      isPerfilAtualizado.value = true
+  // try {
+  //   await store.dispatch('editarPerfil', novoPaciente).then(() => {
+  //     isPerfilAtualizado.value = true
 
-    })
+  //   })
+  // } catch (error) {
+  //   console.log(error)
+  //   perfilErro.value = true
+
+  // }
+
+  try {
+    await store.dispatch('editarPerfil', novoPaciente)
   } catch (error) {
-    perfilErro.value = true
 
   }
 }

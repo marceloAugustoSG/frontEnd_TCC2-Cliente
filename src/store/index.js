@@ -5,8 +5,12 @@ const store = createStore({
     createError: false,
     createSucces: false,
     showBtnSolicitarConsulta: true,
-
     activeBtnRefresh: true,
+
+    variaveistelaPerfil: {
+      updateModifield: false,
+      updateNotModifield: false,
+    },
 
     ativarBtn: Boolean,
     user: {
@@ -30,6 +34,12 @@ const store = createStore({
     mensagemNotificacao: "",
   },
   mutations: {
+    setUpdateModifield(state, payload) {
+      state.variaveistelaPerfil.updateModifield = payload;
+    },
+    setUpdateNotModifield(state, payload) {
+      state.variaveistelaPerfil.updateNotModifield = payload;
+    },
     setActiveBtnRefresh(state, payload) {
       state.activeBtnRefresh = payload;
     },
@@ -105,6 +115,12 @@ const store = createStore({
   },
 
   actions: {
+    setUpdateModifield({ commit }, value) {
+      commit("setUpdateModifield", value);
+    },
+    setUpdateNotModifield({ commit }, value) {
+      commit("setUpdateNotModifield", value);
+    },
     setActiveBtnRefresh({ commit }, value) {
       commit("setActiveBtnRefresh", value);
     },
@@ -119,8 +135,13 @@ const store = createStore({
       try {
         const resposta = await http.put(`paciente/${pacienteId}`, paciente);
         console.log(resposta.data);
+        commit("setUpdateModifield", true);
       } catch (error) {
-        console.log(error);
+        console.log(error.response.status);
+
+        if (error.response.status === 304) {
+          commit("setUpdateNotModifield", true);
+        }
       }
     },
 
@@ -214,7 +235,6 @@ const store = createStore({
       try {
         const notificacao = await http.delete(`/notificacao/${idNot}`);
         console.log(notificacao.data);
-        // console.log(notificacao.status)
       } catch (error) {
         return;
       }
