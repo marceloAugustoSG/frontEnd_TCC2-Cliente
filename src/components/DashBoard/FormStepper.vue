@@ -413,7 +413,7 @@ function enviarRespostas() {
     }
     showStepper.value = false
     console.log(showStepper.value)
-    store.dispatch('setShowBtnSolicitarConsulta', true)
+    store.dispatch('setShowBtnSolicitarConsulta', false)
 }
 
 

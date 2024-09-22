@@ -6,7 +6,10 @@
       </v-card>
     </v-dialog>
     <v-col>
-
+      <v-sheet max-width="400" style="display: flex; align-items: center;" class="mx-auto pa-3 mb-2" border rounded>
+        <img src="../../assets/icone-prazo.png" width="50px" alt="" srcset="">
+        <h2 style="font-family: 'Poppins'; font-weight: 300; text-align: center;"> Agenda SASAS</h2>
+      </v-sheet>
       <v-sheet max-width="400" class="mx-auto pa-3" border rounded>
 
         <h2 class="text-center text-subtitle-1">Login</h2>
@@ -58,16 +61,12 @@ async function submit() {
   await store.dispatch('logar', usuario).then(() => {
     const message = store.state.message
     message ? alertMessage.value = true : alertMessage.value = false
-    router.push({ name: 'dashboard' })
+    router.push({ name: 'consultas' })
   }).catch((e) => {
     console.log(e)
   })
 }
-// async function submit() {
 
-//   await store.dispatch('logar', usuario)
-
-// }
 </script>
 
 <style>

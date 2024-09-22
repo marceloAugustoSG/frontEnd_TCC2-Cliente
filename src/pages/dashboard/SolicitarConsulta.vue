@@ -10,10 +10,11 @@
             <v-text-field label="Matricula" variant="outlined" v-model="store.state.paciente.matricula" disabled />
           </v-col>
           <v-col cols="12" md="12">
-            <v-select v-model="servico" variant="outlined" onchange="changeSelect" label="Serviço" :items="[
-        'Atendimento Médico',
-        'Atendimento Psicológico',
-      ]" required />
+            <v-select v-model="servico" variant="outlined" onchange="changeSelect"
+              @update:model-value="changeBtn(servico)" label="Serviço" :items="[
+                'Atendimento Médico',
+                'Atendimento Psicológico',
+              ]" required />
           </v-col>
           <v-col v-if="servico === 'Atendimento Psicológico'">
             <dialogMensagem :tipo="servico" />
@@ -23,8 +24,8 @@
             <v-textarea label="Observações" variant="outlined" v-model="observacao" clearable />
           </v-col>
         </v-row>
-        <v-btn :class="store.state.showBtnSolicitarConsulta ? '' : 'showBtn'" type="submit" :loading="loading" block
-          color="primary" :append-icon="showIcon ? 'mdi-check-circle' : ''" text="Solicitar Consulta" />
+        <v-btn :disabled="store.state.showBtnSolicitarConsulta" :loading="loading" block color="primary"
+          :append-icon="showIcon ? 'mdi-check-circle' : ''" text="Solicitar Consulta" @click="submit" />
       </form>
     </v-sheet>
     <v-dialog v-model="store.state.isMessageSucesso">
@@ -43,6 +44,17 @@ import mensagemSucesso from '@/components/mensagens/mensagemSucesso.vue';
 
 
 
+function changeBtn(servico) {
+  if (servico === 'Atendimento Médico') {
+    store.dispatch('setShowBtnSolicitarConsulta', false)
+    console.log(store.state.showBtnSolicitarConsulta)
+  } if (servico === 'Atendimento Psicológico') {
+    store.dispatch('setShowBtnSolicitarConsulta', true)
+    console.log(store.state.showBtnSolicitarConsulta)
+  }
+
+
+}
 
 
 let loading = ref(false)
@@ -63,20 +75,12 @@ function getDataAtual() {
   return `${ano}-${mes}-${dia}`;
 }
 
-const min = getDataAtual()
 
 
-function changeSelect() {
-  if (servico.value === 'Atendimento Médico') {
-    console.log('Opção selecionada: Atendimento Médico');
-    alert('alosadfsd')
-    // Coloque aqui o código que deseja executar quando a opção mudar para "Atendimento Médico"
-  } else {
-    console.log('Opção selecionada: Outro serviço');
-    // Coloque aqui o código que deseja executar quando a opção mudar para outro serviço
-  }
-}
+
 function clearCamposConsulta() {
+
+  store.dispatch('setShowBtnSolicitarConsulta', false)
   servico.value = ''
   observacao.value = ''
 }

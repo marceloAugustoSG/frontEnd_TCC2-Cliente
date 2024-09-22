@@ -12,6 +12,7 @@ import { VStepper } from "vuetify/labs/VStepper";
 const ligth = {
   dark: false,
   colors: {
+    colorIcons: "0F406F",
     background: "#ffffff",
     surface: "#EEE",
     primary: "#0D3E6D",
@@ -28,6 +29,7 @@ const ligth = {
 };
 const dark = {
   colors: {
+    colorIcons: "#2F99EE",
     background: "#333333",
     surface: "#333333",
     primary: "#0D3E6D",

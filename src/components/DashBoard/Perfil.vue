@@ -77,16 +77,7 @@ async function submit() {
   }
   console.log(novoPaciente)
 
-  // try {
-  //   await store.dispatch('editarPerfil', novoPaciente).then(() => {
-  //     isPerfilAtualizado.value = true
-
-  //   })
-  // } catch (error) {
-  //   console.log(error)
-  //   perfilErro.value = true
-
-  // }
+ 
 
   try {
     await store.dispatch('editarPerfil', novoPaciente)
@@ -99,8 +90,6 @@ async function submit() {
 <style>
 .bordered-div {
   border: 1px solid rgba(194, 194, 194, 0.336);
-  /* Adiciona uma borda branca de 1 pixel */
   padding: 10px;
-  /* Adiciona um espaçamento interno de 10 pixels (ajuste conforme necessário) */
 }
 </style>

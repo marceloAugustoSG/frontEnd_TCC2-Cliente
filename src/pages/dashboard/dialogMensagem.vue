@@ -27,8 +27,8 @@ const showDialog = ref(props.tipo === 'Atendimento Psicológico');
 function fecharDialog() {
     // Modificando a variável reativa em vez da propriedade
     showDialog.value = false;
-    store.dispatch('setShowBtnSolicitarConsulta', false)
-    console.log(store.state.showBtnSolicitarConsulta);
+    // store.dispatch('setShowBtnSolicitarConsulta', false)
+    // console.log(store.state.showBtnSolicitarConsulta);
 }
 console.log(showDialog.value);
 </script>

@@ -2,7 +2,7 @@
     <v-container class="fill-height">
         <v-sheet max-width="400" class="mx-auto pa-3" border rounded :elevation="8">
             <h2 class="text-center text-subtitle-1 mb-5">Criar conta</h2>
-            <form @submit.prevent="submit">
+            <form @submit.prevent>
 
                 <v-text-field prepend-inner-icon="mdi-account" variant="outlined" v-model="nome" label="Nome"
                     required />
@@ -25,6 +25,9 @@
                     :rules="matriculaRules" required />
                 <v-select label="Vinculo com a UFES" v-model="tipo" variant="outlined" :items="selectTipos" required />
 
+                <v-select v-show="tipo === 'Aluno'" label="Curso" v-model="curso" variant="outlined" :items="cursos"
+                    required />
+
                 <v-text-field v-model="telefone" label="Telefone" variant="outlined" required />
                 <v-text-field type="date" v-model="data" label="Data de Nascimento" variant="outlined" required />
 
@@ -36,7 +39,7 @@
                     </v-col>
 
                     <v-col>
-                        <v-btn type="submit" class="w-100" variant="outlined" color="create">Criar
+                        <v-btn type="submit" @click="submit" class="w-100" variant="outlined" color="create">Criar
                             Conta</v-btn>
                     </v-col>
                 </v-row>
@@ -92,10 +95,10 @@ let telefone = ref('')
 let curso = ref('')
 
 
-const cursos = ['Agronomia', 'Engenharia de Alimentos', 'Engenharia Florestal', 'Engenharia Industrial Madeireira', 'Engenharia Química', 'Medicina Veterinária',
+const cursos = ref(['Agronomia', 'Engenharia de Alimentos', 'Engenharia Florestal', 'Engenharia Industrial Madeireira', 'Engenharia Química', 'Medicina Veterinária',
     'Zootecnia', 'Ciência da Computação', 'Ciências Biológicas(Bacharel)', 'Ciências Biológicas(Licenciatura)', 'Farmácia', 'Física(Licenciatura)', 'Geologia', 'Matemática', 'Nutrição'
     , 'Química(Licenciatura)', 'Sistemas de Informação', 'Ciências Florestais(Mestrado ou Doutorado)', 'Ciências Veterinárias(Mestrado)', 'Ciência e Tecnologia de Alimentos(Mestrado),Engenharia Química(Mestado)', 'Genética e Melhoramento(Mestrado ou Doutorado)',
-    'Produção Vegetal(Mestrado ou Doutorado)', 'Agroquímica(Mestrado)', 'Ensino,Educação Básica e Formação de Professores(Mestrado)']
+    'Produção Vegetal(Mestrado ou Doutorado)', 'Agroquímica(Mestrado)', 'Ensino,Educação Básica e Formação de Professores(Mestrado)']);
 
 
 
@@ -116,9 +119,10 @@ async function submit() {
             matricula: matricula.value,
             dataNascimento: dataFormatada.value,
             curso: curso.value,
-            telefone: telefone.value
+            telefone: telefone.value,
         }
     }
+    console.log('Novo paciente:', novoPaciente.paciente)
     if (!checkPassoWord()) {
         differentPass.value = true
         return;
@@ -147,6 +151,7 @@ function clearInputs() {
     matricula.value = ''
     tipo.value = ''
     data.value = ''
+    curso.value = ''
 }
 
 function checkPassoWord() {

@@ -227,7 +227,7 @@ const store = createStore({
         );
         commit("setNotificacoes", notificacoes.data.notificacoes);
         console.log(this.state.notificacoes);
-      } catch (error) {}
+      } catch (error) { }
     },
 
     async deletarNotificacaoPaciente({ commit }, idNotificacao) {
@@ -242,6 +242,12 @@ const store = createStore({
     async agendarConsulta({ commit }, novaConsulta) {
       try {
         const consulta = await http.post("consulta", novaConsulta);
+        console.log(consulta.status)
+
+        if (consulta.status === 200) {
+          commit('setShowBtnSolicitarConsulta', false);
+
+        }
         const resposta = await consulta.data;
         console.log(resposta);
       } catch (error) {

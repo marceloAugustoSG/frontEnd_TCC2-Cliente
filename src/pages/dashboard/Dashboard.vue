@@ -25,8 +25,9 @@
           <v-menu>
             <template #activator="{ props }">
               <v-avatar v-bind="props" style="max-width: 30px; max-height: 30px">
-                <v-img cover src="https://icones.pro/wp-content/uploads/2022/07/icones-d-administration.png">
-                </v-img>
+                <v-btn>
+                  <v-icon size="25" v-bind="props" color="colorIcons" icon="mdi-account " />
+                </v-btn>
               </v-avatar>
             </template>
             <v-card min-width="230px" class="mt-5">
@@ -52,15 +53,16 @@
               </v-list-item>
             </template>
 
+
             <v-list-item to="/consultas" prepend-icon="mdi-list-box-outline">
               <v-list-item-title>Consultas</v-list-item-title>
             </v-list-item>
             <v-list-item to="/agendar" prepend-icon="mdi-calendar-check">
               <v-list-item-title>Solicitar</v-list-item-title>
             </v-list-item>
-            <v-list-item to="/teste" prepend-icon="mdi-calendar-check">
+            <!-- <v-list-item to="/teste" prepend-icon="mdi-calendar-check">
               <v-list-item-title>teste</v-list-item-title>
-            </v-list-item>
+            </v-list-item> -->
           </v-list-group>
         </v-list>
       </v-navigation-drawer>
@@ -103,7 +105,7 @@ const refresh = async () => {
 onBeforeMount(() => {
 
 
-  
+
   try {
     store.dispatch('init')
     store.dispatch('clearMessage')

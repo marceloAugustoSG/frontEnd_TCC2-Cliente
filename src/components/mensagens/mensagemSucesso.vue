@@ -14,19 +14,19 @@
 <script setup>
 import { useStore } from 'vuex';
 import { defineProps } from 'vue';
+import router from '@/router';
 
 const props = defineProps({
-    mensagem: String
+    mensagem: String,
 })
 
 const store = useStore()
 function fechar() {
+
+    router.push('/consultas')
     store.dispatch('IsMessage', false)
 
-    setTimeout(() => {
-        window.location.reload();
-    }, 100);
+
 
 }
 </script>
-
